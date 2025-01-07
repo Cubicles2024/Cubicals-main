@@ -37,15 +37,11 @@ const LearnJob = () => {
               </Button>
             </div>
           </div>
-          <div className="hidden lg:block">
-            
-          </div>
         </section>
 
-        {/* Featured Learning Paths */}
         <section className="mb-20">
          
-          <Tabs defaultValue="featured" className="mb-12">
+          <Tabs defaultValue="" className="mb-12">
             
             <TabsContent value="featured">
               <CourseCarousel
