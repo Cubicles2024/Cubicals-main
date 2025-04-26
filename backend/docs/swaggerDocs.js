@@ -25,6 +25,12 @@ const options = {
           type: 'apiKey',
           in: 'cookie',
           name: 'token'
+        },
+        apiKeyAuth: {
+          type: 'apiKey',
+          in: 'header',
+          name: 'x-api-key',
+          description: 'API Key for B2B Analytics endpoints'
         }
       },
       schemas: {
@@ -107,6 +113,133 @@ const options = {
             author: { type: 'string', format: 'uuid' },
             blog: { type: 'string', format: 'uuid' }
           }
+        },
+        // B2B Analytics schemas
+        JobMarketAnalytics: {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean' },
+            data: {
+              type: 'object',
+              properties: {
+                jobTypeDistribution: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      jobType: { type: 'string' },
+                      count: { type: 'number' }
+                    }
+                  }
+                },
+                experienceLevelDistribution: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      experienceLevel: { type: 'string' },
+                      count: { type: 'number' }
+                    }
+                  }
+                },
+                locationDistribution: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      location: { type: 'string' },
+                      count: { type: 'number' }
+                    }
+                  }
+                },
+                salaryRanges: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      _id: { type: 'string' },
+                      count: { type: 'number' }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        ApplicationAnalytics: {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean' },
+            data: {
+              type: 'object',
+              properties: {
+                applicationsOverTime: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      year: { type: 'number' },
+                      week: { type: 'number' },
+                      count: { type: 'number' }
+                    }
+                  }
+                },
+                statusDistribution: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      status: { type: 'string' },
+                      count: { type: 'number' }
+                    }
+                  }
+                },
+                averageApplicationsPerJob: { type: 'number' }
+              }
+            }
+          }
+        },
+        IndustryTrends: {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean' },
+            data: {
+              type: 'object',
+              properties: {
+                skillsDemand: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      skill: { type: 'string' },
+                      count: { type: 'number' }
+                    }
+                  }
+                },
+                hiringByIndustry: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      industry: { type: 'string' },
+                      jobCount: { type: 'number' }
+                    }
+                  }
+                },
+                salaryByPosition: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      position: { type: 'string' },
+                      averageSalary: { type: 'number' },
+                      jobCount: { type: 'number' }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -116,16 +249,19 @@ const options = {
       }
     ]
   },
-  apis: ['./docs/swaggerApiDocs.js'],
+  apis: ['./docs/swaggerApiDocs.js', './docs/swaggerB2BDocs.js'],
 };
 
 const specs = swaggerJsDoc(options);
 
-
-
 // Function to setup Swagger docs with Express
 const setupSwagger = (app) => {
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { 
+    explorer: true,
+    swaggerOptions: {
+      persistAuthorization: true
+    }
+  }));
   console.log('Swagger documentation available at /api-docs');
 };
 
