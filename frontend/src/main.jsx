@@ -11,8 +11,10 @@ import initAOS from './utils/aos.js'
 
 const persistor = persistStore(store);
 
-// Initialize AOS
-initAOS();
+// Initialize AOS after the DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  initAOS();
+});
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
