@@ -11,7 +11,6 @@ import jobRoute from "./routes/job.route.js";
 import chartRoutes from "./routes/chart.route.js";
 import applicationRoute from "./routes/application.route.js";
 import blogRoutes from "./routes/blog.route.js"
-import { rate_limiter } from "./utils/rate-limiting.js";
 import setupSwagger from './docs/swaggerDocs.js';
 import { accessLogStream } from "./utils/morganConfig.js";
 dotenv.config({});
