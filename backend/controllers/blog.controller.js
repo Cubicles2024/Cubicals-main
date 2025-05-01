@@ -116,17 +116,29 @@ export const deleteBlog = async (req, res) => {
 // Add a comment to a blog
 export const addComment = async (req, res) => {
     try {
+        console.log('Request body:', req.body);
+        console.log('User ID from auth:', req.id);
+        console.log('Blog ID:', req.params.blogId);
+        
         const { content } = req.body;
+        if (!content) {
+            return res.status(400).json({ message: "Comment content is required" });
+        }
+
         const newComment = new Comment({
             content,
             author: req.id,
             blog: req.params.blogId,
         });
 
+        console.log('New comment to be saved:', newComment);
         const savedComment = await newComment.save();
+        console.log('Comment saved successfully:', savedComment);
+        
         res.status(201).json(savedComment);
     } catch (error) {
-        res.status(500).json({ message: "Error adding comment", error });
+        console.error('Error in addComment:', error);
+        res.status(500).json({ message: "Error adding comment", error: error.message });
     }
 };
 

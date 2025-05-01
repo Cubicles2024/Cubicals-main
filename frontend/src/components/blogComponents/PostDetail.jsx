@@ -104,6 +104,7 @@ const PostDetail = () => {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
+        withCredentials: true,
         body: JSON.stringify({ content: newComment }),
       });
 
