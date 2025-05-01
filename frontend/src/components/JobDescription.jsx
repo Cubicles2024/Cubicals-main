@@ -49,9 +49,16 @@ const JobDescription = () => {
     useEffect(() => {
         const fetchSingleJob = async () => {
             try {
+                const token = user?.token;
+        
                 const res = await axios.get(
                     `${JOB_API_END_POINT}/get/${jobId}`,
-                    { withCredentials: false }
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                        withCredentials: true
+                    }
                 );
                 
                 if (res.data.success) {
