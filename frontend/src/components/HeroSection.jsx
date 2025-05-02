@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Search } from 'lucide-react'
 import { useDispatch } from 'react-redux';
 import { setSearchedQuery } from '@/redux/jobSlice';
@@ -6,10 +6,25 @@ import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 
+import animeEmoji from "/public/anime-emoji.gif"
+
 const HeroSection = () => {
     const [query, setQuery] = useState("");
+    const [showPopup, setShowPopup] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Show popup when component mounts
+        setShowPopup(true);
+        
+        // Hide popup after 4.5 seconds
+        const timer = setTimeout(() => {
+            setShowPopup(false);
+        }, 4500);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     const searchJobHandler = () => {
         dispatch(setSearchedQuery(query));
@@ -21,9 +36,14 @@ const HeroSection = () => {
             <div className=''>
                 <img className=' absolute -z-1 overflow-hidden' src='/looper-pattern.svg' />
             </div>
-            <div id="popup" className="popup flex gap-2">
-                <p>Hello, Welcome to Cubicles!</p> <div className='w-8 h-8'><img className='rounded-full' src='/src/assets/anime-emoji.gif'/></div>
-            </div>
+            {showPopup && (
+                <div id="popup" className="popup flex gap-2">
+                    <p>Hello, Welcome to Cubicles!</p>
+                    <div className='w-8 h-8'>
+                        <img className='rounded-full' src='/anime-emoji.gif' alt="Welcome" />
+                    </div>
+                </div>
+            )}
             
             {/* Left part of top section starts */}
             <main className='flex mx-[6vw] my-[22vh] z-0'>

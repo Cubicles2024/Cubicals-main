@@ -17,13 +17,16 @@ import {
   } from "@/components/ui/command"
 import { Link } from 'react-router-dom'
 
+import jobSeekerImage from "../assets/job-seeker-50.png"
+import looperPattern from "/looper-pattern.svg"
+
 const Info1 = () => {
   return (
     <div className="h-screen w-full">
       <div className="">
         <img
           className=" absolute top-[260vh] -z-1 overflow-hidden"
-          src="/looper-pattern.svg"
+          src={looperPattern}
         />
       </div>
       <div className="top text-white mx-[8vw] ">
@@ -47,21 +50,21 @@ const Info1 = () => {
             >
               <div className="flex gap-3 glass-sm">
                 <img
-                  src="src/assets/job-seeker-50.png"
+                  src={jobSeekerImage}
                   className="h-[20px] mt-[4px]"
                 />{" "}
                 <div className="flex">Jobs search made easy</div>
               </div>
               <div className="flex gap-3 glass-sm ">
                 <img
-                  src="src/assets/job-seeker-50.png"
+                  src={jobSeekerImage}
                   className="h-[20px] mt-[4px]"
                 />{" "}
                 <div className="flex ">Companies Collab Benefits</div>
               </div>
               <div className="flex gap-3 glass-sm ">
                 <img
-                  src="src/assets/job-seeker-50.png"
+                  src={jobSeekerImage}
                   className="h-[20px] mt-[4px]"
                 />{" "}
                 <div className="flex ">Grow & Upskill With Us</div>
@@ -74,21 +77,21 @@ const Info1 = () => {
             >
               <div className="flex gap-3 glass-sm ">
                 <img
-                  src="src/assets/job-seeker-50.png"
+                  src={jobSeekerImage}
                   className="h-[20px] mt-[4px]"
                 />{" "}
                 <div className="flex ">Job Alerts To Stay Updated</div>
               </div>
               <div className="flex gap-3 glass-sm ">
                 <img
-                  src="src/assets/job-seeker-50.png"
+                  src={jobSeekerImage}
                   className="h-[20px] mt-[4px]"
                 />{" "}
                 <div className="flex ">Stay Conneted With Experts</div>
               </div>
               <div className="flex gap-3 glass-sm ">
                 <img
-                  src="src/assets/job-seeker-50.png"
+                  src={jobSeekerImage}
                   className="h-[20px] mt-[4px]"
                 />{" "}
                 <div className="flex ">Experience Sharing Communities</div>
