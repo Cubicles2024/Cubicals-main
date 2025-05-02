@@ -10,20 +10,25 @@ import animeEmoji from "/public/anime-emoji.gif"
 
 const HeroSection = () => {
     const [query, setQuery] = useState("");
-    const [showPopup, setShowPopup] = useState(false);
+    const [popupClass, setPopupClass] = useState("hidden");
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Show popup when component mounts
-        setShowPopup(true);
-        
+        // Show popup after a delay
+        const showTimer = setTimeout(() => {
+            setPopupClass("visible");
+        }, 1000);
+
         // Hide popup after 4.5 seconds
-        const timer = setTimeout(() => {
-            setShowPopup(false);
+        const hideTimer = setTimeout(() => {
+            setPopupClass("hidden");
         }, 4500);
 
-        return () => clearTimeout(timer);
+        return () => {
+            clearTimeout(showTimer);
+            clearTimeout(hideTimer);
+        };
     }, []);
 
     const searchJobHandler = () => {
@@ -36,14 +41,12 @@ const HeroSection = () => {
             <div className=''>
                 <img className=' absolute -z-1 overflow-hidden' src='/looper-pattern.svg' />
             </div>
-            {showPopup && (
-                <div id="popup" className="popup flex gap-2">
-                    <p>Hello, Welcome to Cubicles!</p>
-                    <div className='w-8 h-8'>
-                        <img className='rounded-full' src='/anime-emoji.gif' alt="Welcome" />
-                    </div>
+            <div className={`popup ${popupClass}`}>
+                <p className="m-0">Hello, Welcome to Cubicles!</p>
+                <div className='w-10 h-10 flex items-center'>
+                    <img className='rounded-full' src='/anime-emoji.gif' alt="Welcome" />
                 </div>
-            )}
+            </div>
             
             {/* Left part of top section starts */}
             <main className='flex mx-[6vw] my-[22vh] z-0'>
