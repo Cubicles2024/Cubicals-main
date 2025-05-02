@@ -30,7 +30,14 @@ const Profile = () => {
                                     className="object-cover"
                                 />
                             </Avatar>
-                            <h1 className="text-xl font-bold text-slate-900 mb-1">{user?.fullname}</h1>
+                            <div className="profile-header">
+                                <h1 data-testid="profile-name" className="text-xl font-bold">
+                                    {user?.fullname}
+                                </h1>
+                                <p data-testid="user-email" className="text-gray-600">
+                                    {user?.email}
+                                </p>
+                            </div>
                             <p className="text-slate-600 mb-4">{user?.profile?.bio || "Add a professional bio"}</p>
                             
                             <Button 
@@ -46,7 +53,7 @@ const Profile = () => {
                         <div className="mt-6 space-y-4">
                             <div className="flex items-center gap-3 text-slate-700 p-3 bg-slate-50 rounded-lg">
                                 <Mail className="h-5 w-5 text-slate-600" />
-                                <span className="text-sm">{user?.email}</span>
+                                <div data-testid="user-email">{user?.email}</div>
                             </div>
                             
                             <div className="flex items-center gap-3 text-slate-700 p-3 bg-slate-50 rounded-lg">

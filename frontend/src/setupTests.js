@@ -81,6 +81,8 @@ window.matchMedia = vi.fn().mockImplementation(query => ({
   dispatchEvent: vi.fn()
 }));
 
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
+
 // Clean up after each test
 afterEach(() => {
   vi.clearAllMocks();

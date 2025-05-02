@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Info1 from './Info1'
 import InfoLast from './InfoLast'
+import { Link } from 'react-router-dom'
 
 
 const Home = () => {
@@ -24,6 +25,9 @@ const Home = () => {
     <div className='bg-black text-white'>
       <Navbar/>
       <HeroSection />
+      <h1 className="hero-heading">
+        Transform Your Career Journey
+      </h1>
       <CategoryCarousel />
       <LatestJobs />
 
@@ -31,6 +35,12 @@ const Home = () => {
       <InfoLast/>
 
       <Footer />
+
+      <button data-testid="try-pro-button">
+        <span className="relative p-1 pl-7 pr-6 w-[8vw] rounded-3xl font-semibold bg-black">
+          Try Pro →
+        </span>
+      </button>
     </div>
   )
 }
