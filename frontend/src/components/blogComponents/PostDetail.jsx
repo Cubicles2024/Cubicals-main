@@ -47,6 +47,12 @@ const PostDetail = () => {
     }
   }, [id, user]);
 
+  // Add this sorting function near your other utility functions
+  const sortCommentsByDate = (comments) => {
+    return [...comments].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  };
+
+  // Modify the fetchPaginatedComments function
   const fetchPaginatedComments = async (page = 0) => {
     try {
       const skip = page * COMMENTS_LIMIT;
@@ -57,9 +63,9 @@ const PostDetail = () => {
       const data = await response.json();
 
       if (page === 0) {
-        setComments(data.comments);
+        setComments(sortCommentsByDate(data.comments));
       } else {
-        setComments((prev) => [...prev, ...data.comments]);
+        setComments((prev) => sortCommentsByDate([...prev, ...data.comments]));
       }
 
       setHasMoreComments(skip + data.comments.length < data.total);
@@ -84,40 +90,54 @@ const PostDetail = () => {
     setNewComment(e.target.value);
   };
 
+  // Modify the handleSubmitComment function where you update the comments state
   const handleSubmitComment = async (e) => {
     e.preventDefault();
 
     if (!newComment.trim()) return;
 
     try {
-      setCommentLoading(true);
-      setCommentError(null);
+        setCommentLoading(true);
+        setCommentError(null);
 
-      if (!user) {
-        navigate('/login', { state: { from: `/post/${id}` } });
-        return;
-      }
+        if (!user) {
+            navigate('/login', { state: { from: `/post/${id}` } });
+            return;
+        }
 
-      const response = await fetch(`${BLOG_API_END_POINT}/${id}/comments`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        withCredentials: true,
-        body: JSON.stringify({ content: newComment }),
-      });
+        const response = await fetch(`${BLOG_API_END_POINT}/${id}/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ content: newComment }),
+        });
 
-      if (!response.ok) {
-        throw new Error('Failed to add comment');
-      }
+        if (!response.ok) {
+            throw new Error('Failed to add comment');
+        }
 
-      await fetchPaginatedComments(0);
-      setNewComment('');
+        const data = await response.json();
+        
+        const newCommentData = {
+            _id: data._id,
+            content: data.content,
+            author: user,
+            createdAt: data.createdAt,
+        };
+
+        // Update comments state and sort
+        setComments(prevComments => sortCommentsByDate([newCommentData, ...prevComments]));
+
+        // Reset comment input
+        setNewComment('');
+        
     } catch (err) {
-      setCommentError(err.message);
+        setCommentError(err.message);
+        console.error('Error submitting comment:', err);
     } finally {
-      setCommentLoading(false);
+        setCommentLoading(false);
     }
   };
 
