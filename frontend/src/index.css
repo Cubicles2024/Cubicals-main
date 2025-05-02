@@ -236,6 +236,9 @@ body::-webkit-scrollbar-button:single-button {
   font-weight: 500;
   animation: slideIn 0.5s ease-out forwards, fadeOut 0.5s ease-out 4s forwards;
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 @keyframes slideIn {
