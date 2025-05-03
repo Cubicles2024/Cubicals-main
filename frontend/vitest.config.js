@@ -15,7 +15,13 @@ export default defineConfig({
         'node_modules/',
         'src/setupTests.js',
       ],
+      reportsDirectory: './reports/coverage',
     },
+    outputFile: {
+      json: './reports/test-results.json',
+      html: './reports/test-results.html',
+    },
+    reporters: ['default', 'json', 'html'],
   },
   resolve: {
     alias: {
