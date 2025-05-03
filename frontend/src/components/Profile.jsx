@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import Navbar from './shared/Navbar';
 import { Avatar, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
-import { Contact, Mail, Pen, Download, Upload } from 'lucide-react';
-import { Badge } from './ui/badge';
+import { Contact, Mail, Pen, Download, Upload, Badge } from 'lucide-react';
 import AppliedJobTable from './AppliedJobTable';
 import UpdateProfileDialog from './UpdateProfileDialog';
 import { useSelector } from 'react-redux';
@@ -65,9 +64,29 @@ const Profile = () => {
 
                     <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <h3 className="text-base font-semibold text-slate-900 mb-4">Skills & Resume</h3>
+                    
                         
                         <div className="space-y-4">
                             {/* Skills section remains unchanged */}
+
+                             <div>
+                                 <h4 className="text-sm font-medium text-slate-700 mb-2">Technical Skills</h4>
+                                 <div className="flex flex-wrap gap-2">
+                                     {user?.profile?.skills?.length ? (
+                                         user.profile.skills.map((skill, index) => (
+                                             <span
+                                                 key={index}
+                                                 variant="secondary"
+                                                 className="px-2.5 py-1 text-gray-500 bg-slate-100 rounded-lg border border-black"
+                                             >
+                                                 {skill}
+                                             </span>
+                                         ))
+                                     ) : (
+                                         <p className="text-sm text-slate-400">No skills added yet</p>
+                                     )}
+                                 </div>
+                             </div>
 
                             <div>
                                 <h4 className="text-sm font-medium text-slate-700 mb-2">Resume</h4>
@@ -85,7 +104,7 @@ const Profile = () => {
                                             </span>
                                         </a>
                                         <p className="text-xs text-slate-500">
-                                            Last updated: {new Date(user.profile.updatedAt).toLocaleDateString()}
+                                            Last updated: {new Date(user.profile.created_at).toLocaleDateString()}
                                         </p>
                                     </div>
                                 ) : (

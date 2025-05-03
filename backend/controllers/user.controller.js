@@ -7,6 +7,7 @@ import PDFDocument from "pdfkit";
 import applicationModel from "../models/application.model.js";
 import moment from 'moment';
 import userModel from "../models/user.model.js";
+import mongoose from "mongoose";
 
 // Simple email validation regex
 //format: something@something.something
@@ -151,12 +152,22 @@ class UserController {
             if (bio) user.profile.bio = bio;
             if (skills) user.profile.skills = skills.split(",");
 
-            // Handle profile photo upload
             if (file) {
+                // console.log("Resume upload triggered after getting file")
                 const fileUri = getDataUri(file);
-                cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-                user.profile.resume = cloudResponse.secure_url; // Save Cloudinary URL
+                const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+                    public_id: `resume_${Date.now()}`,
+                  });
+                  const baseUrl = `https://res.cloudinary.com/${cloudinary.config().cloud_name}`;
+                  const pdfUrl = `${baseUrl}/image/upload/f_auto,q_auto/${cloudResponse.public_id}.pdf`;
+                
+                user.profile.resume = pdfUrl;
+
                 user.profile.resumeOriginalName = file.originalname; // Save original file name
+                // console.log("File uploaded in resume")
+                // console.log(cloudResponse);
+            }else {
+                console.log("File not received from request of frontend")
             }
 
             await user.save();
@@ -186,51 +197,105 @@ class UserController {
     async generateUserReport(req, res, next) {
         try {
             const userId = req.id;
-            const user = await User.findById(userId); 
     
+            if (!mongoose.isValidObjectId(userId)) {
+                return res.status(400).json({ 
+                    message: "Invalid user ID format",
+                    success: false 
+                });
+            }
+    
+            const userObjectId = new mongoose.Types.ObjectId(userId);
+            
+            const user = await User.findById(userObjectId); 
+            
             if (!user) {
                 return res.status(404).json({ message: "User not found", success: false });
             }
     
             const applications = await applicationModel
-                .find({ applicant: userId })
+                .find({ applicant: userObjectId }) 
                 .populate({
                     path: 'job',
-                    populate: { path: 'company' } // Populate the company field
-                });
+                    populate: { 
+                        path: 'company',
+                        model: 'Company'
+                    }
+                })
+                .lean();
+    
+            // 3. Add debug logging
+            console.log(`Found ${applications.length} applications for user ${userId}`);
+            console.log('Sample application:', applications[0]);
     
             const doc = new PDFDocument();
             res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', 'attachment; filename=user_report.pdf');
-        
-            // Add user details to the PDF
-            doc.fontSize(18).text(`User Report for ${user.fullname}`, { align: 'center' });
+            res.setHeader('Content-Disposition', `attachment; filename=${user.fullname}_report.pdf`);
+    
+            // PDF Content
+            doc.fontSize(18).text(`Career Report for ${user.fullname}`, { align: 'center' });
             doc.moveDown();
-            doc.fontSize(14).text(`Email: ${user.email}`);
-            doc.text(`Phone: ${user.phoneNumber}`);
-            doc.moveDown();
-        
-            doc.fontSize(16).text('All Applications:', { underline: true });
-        
+            
+            // User Details Table
+            doc.fontSize(12)
+               .text(`Email: ${user.email || 'Not provided'}`, { continued: true })
+               .text(`Phone: ${user.phoneNumber || 'Not provided'}`, { align: 'right' });
+            
+            doc.moveDown(2);
+    
+            // Applications Section
+            doc.fontSize(16).text('Job Applications', { underline: true });
+            
             if (applications.length === 0) {
-                doc.text('No applications found.'); 
+                doc.fontSize(12).text('No applications found.', { color: '#666' });
             } else {
                 applications.forEach((app, index) => {
-                    doc.moveDown();
-                    doc.fontSize(12).text(`Application No.${index + 1}`);
-                    doc.text(`Job Title: ${app.job?.title || "N/A"}`); 
-                    doc.text(`Company: ${app.job?.company?.name || "N/A"}`); 
-                    doc.text(`Status: ${app.status || "N/A"}`);
-                    doc.text(`Applied On: ${moment(app.createdAt).format('DD-MM-YYYY')}`);
+                    // Application Header
+                    doc.moveDown()
+                       .fontSize(14)
+                       .fillColor('#333')
+                       .text(`${index + 1}. ${app.job?.title || 'Untitled Position'}`, {
+                           underline: true
+                       });
+    
+                    // Application Details
+                    doc.fontSize(12)
+                       .fillColor('#666')
+                       .text(`Company: ${app.job?.company?.name || 'Company not specified'}`);
+                    
+                    // Status with color coding
+                    const statusColor = app.status === 'accepted' ? '#22c55e' : 
+                                      app.status === 'rejected' ? '#ef4444' : '#eab308';
+                    doc.text(`Status: `)
+                       .fillColor(statusColor)
+                       .text(app.status.toUpperCase())
+                       .fillColor('#666');
+    
+                    doc.text(`Applied: ${moment(app.createdAt).format('MMM D, YYYY')}`);
+                    
+                    // Separator
+                    if (index < applications.length - 1) {
+                        doc.moveDown(0.5)
+                           .lineWidth(0.5)
+                           .strokeColor('#ddd')
+                           .lineCap('butt')
+                           .moveTo(doc.x, doc.y)
+                           .lineTo(doc.page.width - 50, doc.y)
+                           .stroke();
+                    }
                 });
             }
     
-            doc.end(); 
-            doc.pipe(res); 
+            doc.end();
+            doc.pipe(res);
     
         } catch (error) {
-            console.error('Error generating report:', error); 
-            next(error);
+            console.error('Report generation error:', error);
+            res.status(500).json({ 
+                message: 'Failed to generate report',
+                error: error.message,
+                success: false 
+            });
         }
     }
 

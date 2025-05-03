@@ -13,5 +13,16 @@ export default {
     '^@/(.*)$': '<rootDir>/$1'
   },
   moduleFileExtensions: ['js', 'json'],
-  moduleDirectories: ['node_modules', 'src']
+  moduleDirectories: ['node_modules', 'src'],
+  // Coverage configuration
+  collectCoverageFrom: [
+    '**/*.js',
+    '!**/node_modules/**',
+    '!**/coverage/**',
+    '!**/reports/**',
+    '!jest.config.js',
+    '!**/Benchmarks/**'
+  ],
+  coverageDirectory: 'coverage',
+  coverageReporters: ['json', 'lcov', 'text', 'clover', 'html']
 }

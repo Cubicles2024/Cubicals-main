@@ -10,13 +10,17 @@ const options = {
       description: 'Job Portal API Documentation',
       contact: {
         name: 'API Support',
-        email: 'support@jobportal.com',
+        email: '',
       },
     },
     servers: [
+      // {
+      //   url: 'http://localhost:3000',
+      //   description: 'Development server',
+      // },
       {
-        url: 'http://localhost:3000',
-        description: 'Development server',
+        url: process.env.BACKEND_URL || "http://localhost:3000",
+        description: 'Production server',
       },
     ],
     components: {
