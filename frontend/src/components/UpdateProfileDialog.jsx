@@ -138,7 +138,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                     type="file"
                                     accept="application/pdf"
                                     onChange={fileChangeHandler}
-                                    className="col-span-3"
+                                    className="col-span-3 hover:bg-slate-100"
                                 />
                             </div>
                         </div>

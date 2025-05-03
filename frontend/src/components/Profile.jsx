@@ -3,7 +3,6 @@ import Navbar from './shared/Navbar';
 import { Avatar, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import { Contact, Mail, Pen, Download, Upload } from 'lucide-react';
-import { Badge } from './ui/badge';
 import AppliedJobTable from './AppliedJobTable';
 import UpdateProfileDialog from './UpdateProfileDialog';
 import { useSelector } from 'react-redux';
@@ -85,7 +84,7 @@ const Profile = () => {
                                             </span>
                                         </a>
                                         <p className="text-xs text-slate-500">
-                                            Last updated: {new Date(user.profile.updatedAt).toLocaleDateString()}
+                                            Last updated: {new Date(user.profile.created_at).toLocaleDateString()}
                                         </p>
                                     </div>
                                 ) : (
