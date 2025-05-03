@@ -105,8 +105,8 @@ class UserController {
                 .status(200)
                 .cookie("token", token, { 
                     httpOnly: true,
-                    secure: true,                 
-                    sameSite: "none",   
+                    secure: true,                
+                    sameSite: "none",
                     maxAge: 7 * 24 * 60 * 60 * 1000 
                 })
                 .json({
