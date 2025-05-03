@@ -30,8 +30,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     }
 
     const fileChangeHandler = (e) => {
-        const image = e.target.files?.[0];
-        setInput({ ...input, file })
+        const file = e.target.files?.[0];
+        setInput({ ...input, file }); 
     }
 
     const submitHandler = async (e) => {
@@ -42,8 +42,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         formData.append("phoneNumber", input.phoneNumber);
         formData.append("bio", input.bio);
         formData.append("skills", input.skills); // Assuming skills can be stored as a comma-separated string
-        if (input.image) {
-            formData.append("file", input.image);
+        if (input.file) {
+            formData.append("file", input.file);
         }
 
         try {

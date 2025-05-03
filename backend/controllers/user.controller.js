@@ -151,12 +151,22 @@ class UserController {
             if (bio) user.profile.bio = bio;
             if (skills) user.profile.skills = skills.split(",");
 
-            // Handle profile photo upload
             if (file) {
+                console.log("Resume upload triggered after getting file")
                 const fileUri = getDataUri(file);
-                cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-                user.profile.resume = cloudResponse.secure_url; // Save Cloudinary URL
+                const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+                    public_id: `resume_${Date.now()}`,
+                  });
+                  const baseUrl = `https://res.cloudinary.com/${cloudinary.config().cloud_name}`;
+                  const pdfUrl = `${baseUrl}/image/upload/f_auto,q_auto/${cloudResponse.public_id}.pdf`;
+                
+                user.profile.resume = pdfUrl;
+
                 user.profile.resumeOriginalName = file.originalname; // Save original file name
+                console.log("File uploaded in resume")
+                console.log(cloudResponse);
+            }else {
+                console.log("File not received from request of frontend")
             }
 
             await user.save();
