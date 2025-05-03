@@ -19,7 +19,7 @@ const options = {
       //   description: 'Development server',
       // },
       {
-        url: process.env.FRONTEND_URL,
+        url: process.env.BACKEND_URL || "http://localhost:3000",
         description: 'Production server',
       },
     ],
