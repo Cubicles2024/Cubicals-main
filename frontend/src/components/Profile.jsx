@@ -8,7 +8,7 @@ import UpdateProfileDialog from './UpdateProfileDialog';
 import { useSelector } from 'react-redux';
 import useGetAppliedJobs from '@/hooks/useGetAppliedJobs';
 import { ReportDownloadButton } from './DownloadReport';
-import UserFallback from "@assets/user.png"
+// import UserFallback from "@assets/user.png"
 
 const Profile = () => {
     useGetAppliedJobs();
@@ -26,7 +26,7 @@ const Profile = () => {
                         <div className="flex flex-col items-center text-center">
                             <Avatar className="h-24 w-24 mb-4 border-2 border-slate-100">
                                 <AvatarImage 
-                                    src={user?.profile?.profilePhoto || UserFallback} 
+                                    src={user?.profile?.profilePhoto || "https://tse3.mm.bing.net/th/id/OIP.Wkn4_kVHLYYZOOy7FMnFXwHaHa?pid=ImgDet&w=188&h=188&c=7&dpr=1.5"} 
                                     className="object-cover"
                                 />
                             </Avatar>
