@@ -14,3 +14,10 @@ export const accessLogStream = createStream("access.log", {
     path: logDirectory,
     maxFiles: 7, // Keep logs for 7 days (optional)
 });
+
+export const dualStream = {
+    write: (message) => {
+      accessLogStream.write(message);  // write to file
+      process.stdout.write(message);   // log to console
+    },
+  };
