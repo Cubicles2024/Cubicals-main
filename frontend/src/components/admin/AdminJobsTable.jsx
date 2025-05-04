@@ -5,6 +5,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Edit2, Eye, MoreHorizontal } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { JOB_API_END_POINT } from '@/utils/constant'
+import { toast } from 'sonner'
 
 const AdminJobsTable = () => {
     const { allAdminJobs, searchJobByText } = useSelector(store => store.job)
@@ -31,6 +33,38 @@ const AdminJobsTable = () => {
             day: 'numeric'
         })
     }
+
+    const handleDeleteJob = async (jobId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this job?");
+        if (!confirmDelete) return;
+    
+        try {
+            const res = await fetch(`${JOB_API_END_POINT}/delete/${jobId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include"
+            });
+    
+            const data = await res.json();
+    
+            if (!res.ok) {
+                throw new Error(data.message || "Failed to delete job.");
+            }
+    
+            // Optionally show a toast or message
+            // alert("Job deleted successfully.");
+            toast.success("Job deleted successfully!")
+
+            setFilterJobs(prev => prev.filter(job => job._id !== jobId));
+        } catch (error) {
+            console.error("Failed to delete job:", error);
+            alert(error.message || "Error deleting job.");
+        }
+    };
+    
+    
 
     return (
         <div className="rounded-lg border shadow-sm bg-white">
@@ -95,6 +129,22 @@ const AdminJobsTable = () => {
                                             >
                                                 <Eye className="w-4 h-4" />
                                                 <span>Applicants</span>
+                                            </button>
+
+                                            <button
+                                                onClick={() => handleDeleteJob(job._id)}
+                                                className="w-full flex items-center gap-3 px-3 py-2 rounded-md hover:bg-red-50 text-gray-700 hover:text-red-600 transition-colors"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-4 w-4"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                                <span>Delete</span>
                                             </button>
                                         </div>
                                     </PopoverContent>

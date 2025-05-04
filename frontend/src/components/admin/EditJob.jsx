@@ -38,9 +38,17 @@ const EditJob = () => {
                 const res = await axios.get(`${JOB_API_END_POINT}/get/${params.id}`);
                 if (res.data.success) {
                     setInput({
-                        ...res.data.job,
-                        requirements: res.data.job.requirements || []
+                        title: res.data.job.title || "",
+                        description: res.data.job.description || "",
+                        requirements: res.data.job.requirements || [],
+                        salary: res.data.job.salary || "",
+                        location: res.data.job.location || "",
+                        jobType: res.data.job.jobType || "",
+                        experience: res.data.job.experienceLevel || "",
+                        position: res.data.job.position || 0,
+                        companyId: res.data.job.company?._id || ""
                     });
+                    
                 }
             } catch (error) {
                 toast.error("Error fetching job details.");
