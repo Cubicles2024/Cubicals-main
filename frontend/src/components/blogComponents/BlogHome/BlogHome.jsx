@@ -17,7 +17,7 @@ const BlogHome = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `${BLOG_API_END_POINT}/getPosts?page=${pageNum}&limit=6&sortBy=createdAt&sortOrder=-1`
+        `${BLOG_API_END_POINT}/getPosts?page=${pageNum}&limit=6`
       );
       
       if (!response.ok) {

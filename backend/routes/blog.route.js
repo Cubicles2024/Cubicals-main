@@ -8,8 +8,8 @@ const router = express.Router();
 
 // Blog Routes
 router.post("/createPost", isAuthenticated, singleUpload, createBlog);  // working
-router.get("/getPosts", cacheMiddleware(300), getAllBlogs);  
-router.get("/:id", cacheMiddleware(300), getBlogById); 
+router.get("/getPosts",  getAllBlogs);  
+router.get("/:id", cacheMiddleware(10), getBlogById); 
 router.get("/author/:id", cacheMiddleware(300), getBlogByAuthorId); 
 router.delete("/author/delete/:id", isAuthenticated, deleteBlog);  //working
 
