@@ -9,6 +9,6 @@ router.get("/job-market", apiKeyAuth, b2bAnalyticsController.getJobMarketAnalyti
 router.get("/applications", apiKeyAuth, b2bAnalyticsController.getApplicationAnalytics);
 router.get("/industry-trends", apiKeyAuth, b2bAnalyticsController.getIndustryTrends);
 router.get("/time-trends", apiKeyAuth, b2bAnalyticsController.getTimeTrends);
-router.get("/benchmarking", apiKeyAuth, b2bAnalyticsController.getBenchmarkingAnalytics);
+// Removed benchmarking endpoint
 
 export default router;

@@ -100,35 +100,3 @@
  *       500:
  *         description: Server error
  */
-
-/**
- * @swagger
- * /api/v1/b2b/analytics/benchmarking:
- *   get:
- *     summary: Get benchmarking analytics
- *     tags: [B2B Analytics]
- *     security:
- *       - apiKeyAuth: []
- *     parameters:
- *       - in: query
- *         name: industry
- *         schema:
- *           type: string
- *         description: Filter by industry
- *     responses:
- *       200:
- *         description: Benchmarking data successfully retrieved
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 data:
- *                   type: object
- *       401:
- *         description: Invalid or missing API key
- *       500:
- *         description: Server error
- */
