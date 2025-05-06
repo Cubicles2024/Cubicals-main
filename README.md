@@ -2,6 +2,7 @@
 Cubicles is a job portal application that helps job seekers find opportunities and employers post job listings. The project aims to simplify the job search process and provide insights for getting hired faster in the Human Resource Management System (HRMS) domain.
 
 -  Check out our **Live site**: https://cubicles.netlify.app/
+-  Swagger documentation available at:  https://motionless-doro-itsaj1005-1b938d2c.koyeb.app/api-docs
 
 ---
 
