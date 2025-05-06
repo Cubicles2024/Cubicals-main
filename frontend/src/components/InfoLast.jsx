@@ -3,7 +3,9 @@ import { Button } from './ui/button'
 
 import calenderIcon from "../assets/icons8-calender-58.png"
 import githubLogo from "../assets/github-mark-logo.png"
-
+import shareLogo from "../assets/share-logo.png"
+import discordLogo from "../assets/discord-logo.png"
+import twitterLogo from "../assets/twitter-logo.png"
 const InfoLast = () => {
   return (
     <div className='h-screen bg-black w-100vw'>
@@ -73,27 +75,27 @@ const InfoLast = () => {
 
               <div>
                 <div className='flex'>
-                  <img src='/src/assets/twitter-logo.png' className='h-[24px] mt-1 mr-2'/>
+                  <img src={twitterLogo} className='h-[24px] mt-1 mr-2'/>
                   <span className='font-semibold text-lg'>Twitter</span>
-                  <img src='/src/assets/share-logo.png' className='h-[18px] mt-2 ml-2'></img>
+                  <img src={shareLogo} className='h-[18px] mt-2 ml-2'></img>
                 </div>
                 <p className='mt-3 w-[18vw] text-left text-[16px] font-[500] text-zinc-400'>For announcements, tips and general information.</p>
               </div>
 
               <div>
                 <div className='flex'>
-                  <img src='/src/assets/discord-logo.png' className='h-[24px] mt-1 mr-2'/>
+                  <img src={discordLogo} className='h-[24px] mt-1 mr-2'/>
                   <span className='font-semibold text-lg'>Discord</span>
-                  <img src='/src/assets/share-logo.png' className='h-[18px] mt-2 ml-2'></img>
+                  <img src={shareLogo} className='h-[18px] mt-2 ml-2'></img>
                 </div>
                 <p className='mt-3 w-[18vw] text-left text-[16px] font-[500] text-zinc-400'>To get involved in the community, ask questions and share tips.</p>
               </div>
               
               <a href='https://github.com/Cubicles2024/Cubicals-main' target='_blank'>
                 <div className='flex '>
-                  <img src='/src/assets/github-mark-logo.png' className='h-[24px] mt-1 mr-2 bg-white rounded-full'/>
+                  <img src={githubLogo} className='h-[24px] mt-1 mr-2 bg-white rounded-full'/>
                   <span className='font-semibold text-lg'>Github</span>
-                  <img src='/src/assets/share-logo.png' className='h-[18px] mt-2 ml-2'></img>
+                  <img src={shareLogo} className='h-[18px] mt-2 ml-2'></img>
                 </div>
                 <p className='mt-3 w-[18vw] text-left text-[16px] font-[500] text-zinc-400'>To report bugs, request features and contribute to Cubicles</p>
               </a>

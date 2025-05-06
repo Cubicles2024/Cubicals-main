@@ -14,7 +14,7 @@ const Footer = () => {
 
           {/* Right Section - Social Links */}
           <div className="flex gap-4">
-            <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
+            <a href="https://github.com/Cubicles2024/Cubicals-main" className="text-gray-400 hover:text-green-400 transition-colors">
               <Github className="w-5 h-5" />
             </a>
             <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
