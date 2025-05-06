@@ -68,10 +68,13 @@
  *             required:
  *               - email
  *               - password
+ *               - role
  *             properties:
  *               email:
  *                 type: string
  *               password:
+ *                 type: string
+ *               role:
  *                 type: string
  *     responses:
  *       200:
