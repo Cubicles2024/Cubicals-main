@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { Edit2, MoreHorizontal, Trash2 } from 'lucide-react'
+import { Edit2, Eye, MoreHorizontal, Trash2 } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import DeleteCompanyDialog from './DeleteCompanyDialog'
@@ -91,6 +91,14 @@ const CompaniesTable = ({ refreshCompanies }) => {
                                             >
                                                 <Edit2 className='w-4 h-4' />
                                                 <span>Edit</span>
+                                            </button>
+
+                                            <button 
+                                                onClick={() => navigate(`/admin/jobs`)}
+                                                className='w-full flex items-center gap-3 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors'
+                                            >
+                                                <Eye className="h-4 w-4"/>
+                                                <span>View Jobs</span>
                                             </button>
                                             
                                             <button

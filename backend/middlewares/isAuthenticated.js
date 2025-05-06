@@ -12,7 +12,15 @@ class AuthMiddleware {
         });
       }
 
-      const decoded = jwt.verify(token, process.env.SECRET_KEY);
+      const decoded = jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+          if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expired' });
+          }
+          return res.status(401).json({ message: 'Invalid token' });
+        }
+        return decoded;
+      });
 
       if (!decoded) {
         return res.status(401).json({

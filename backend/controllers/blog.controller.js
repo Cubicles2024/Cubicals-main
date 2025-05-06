@@ -27,15 +27,41 @@ export const createBlog = async (req, res) => {
 };
 
 
-// Get all blogs
+// Get blogs with pagination and sorting
 export const getAllBlogs = async (req, res) => {
     try {
-        const blogs = await Blog.find().populate("author", "fullname email");
-        res.status(200).json(blogs);
+      const { page = 1, limit = 10, sortBy = 'createdAt', sortOrder = -1 } = req.query;
+      const skip = (parseInt(page) - 1) * parseInt(limit);
+      
+      // Create sort object
+      const sort = {};
+      sort[sortBy] = parseInt(sortOrder);
+      
+      // Query with pagination, sorting and field selection
+      const blogs = await Blog.find()
+        .select('title content tags image createdAt updatedAt')
+        .populate("author", "fullname email")
+        .sort(sort)
+        .skip(skip)
+        .limit(parseInt(limit))
+        .lean(); // Use lean() for faster queries
+      
+      // Get total count for pagination info
+      const total = await Blog.countDocuments();
+      
+      res.status(200).json({
+        blogs,
+        pagination: {
+          total,
+          page: parseInt(page),
+          pages: Math.ceil(total / parseInt(limit))
+        }
+      });
     } catch (error) {
-        res.status(500).json({ message: "Error fetching blogs", error });
+      res.status(500).json({ message: "Error fetching blogs", error: error.message });
     }
-};
+  };
+  
 
 // Get a single blog by ID
 export const getBlogById = async (req, res) => {
@@ -90,26 +116,50 @@ export const deleteBlog = async (req, res) => {
 // Add a comment to a blog
 export const addComment = async (req, res) => {
     try {
+        console.log('Request body:', req.body);
+        console.log('User ID from auth:', req.id);
+        console.log('Blog ID:', req.params.blogId);
+        
         const { content } = req.body;
+        if (!content) {
+            return res.status(400).json({ message: "Comment content is required" });
+        }
+
         const newComment = new Comment({
             content,
             author: req.id,
             blog: req.params.blogId,
         });
 
+        console.log('New comment to be saved:', newComment);
         const savedComment = await newComment.save();
+        console.log('Comment saved successfully:', savedComment);
+        
         res.status(201).json(savedComment);
     } catch (error) {
-        res.status(500).json({ message: "Error adding comment", error });
+        console.error('Error in addComment:', error);
+        res.status(500).json({ message: "Error adding comment", error: error.message });
     }
 };
 
-// Get all comments for a specific blog
+// GET /blogs/:blogId/comments?skip=0&limit=10
 export const getCommentsByBlogId = async (req, res) => {
+    const { blogId } = req.params;
+    const skip = parseInt(req.query.skip) || 0;
+    const limit = parseInt(req.query.limit) || 10;
+  
     try {
-        const comments = await Comment.find({ blog: req.params.blogId }).populate("author", "fullname email");
-        res.status(200).json(comments);
+      const comments = await Comment.find({ blog: blogId })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate("author", "fullname email");
+  
+      const totalComments = await Comment.countDocuments({ blog: blogId });
+  
+      res.status(200).json({ comments, total: totalComments });
     } catch (error) {
-        res.status(500).json({ message: "Error fetching comments", error });
+      res.status(500).json({ message: "Error fetching comments", error });
     }
-};
+  };
+  

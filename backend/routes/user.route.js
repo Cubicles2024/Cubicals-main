@@ -16,6 +16,7 @@ import {
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import { singleUpload } from "../middlewares/mutler.js"; 
 import ErrorHandler from '../middlewares/errorHandler.js';
+import cacheMiddleware from '../middlewares/cacheMiddleware.js';
 
 const router = express.Router();
 
@@ -35,9 +36,12 @@ router.route("/profile/update").post(isAuthenticated, singleUpload, updateProfil
 router.get('/report', isAuthenticated, generateUserReport);
 
 //Rouet to get all the recruiters
-router.get('/getAllRecruiters', getAllRecruiters);
+router.get('/getAllRecruiters', cacheMiddleware(300), getAllRecruiters);
 
-router.get('/getRecruiterCount', getRecruiterCount);
+router.get('/getRecruiterCount', cacheMiddleware(300), getRecruiterCount);
+
+router.get('/getAllUsers', cacheMiddleware(300), getAllUsers);
+
 
 router.get("/error", (req, res, next) => {
     next(new ErrorHandler("This is a test error!", 400));
@@ -45,9 +49,6 @@ router.get("/error", (req, res, next) => {
 
 // Route to delete a recruiter
 router.delete('/deleteRecruiter/:id', deleteRecruiter);
-
-// Route to get all users
-router.get('/getAllUsers', getAllUsers);
 
 // Route to delete a user
 router.delete('/deleteUser/:id', deleteUser);

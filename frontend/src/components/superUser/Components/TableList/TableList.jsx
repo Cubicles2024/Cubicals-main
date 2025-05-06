@@ -25,6 +25,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import { toast } from 'sonner';
 
 // Make the API call to the backend
 function TableList() {
@@ -76,25 +77,27 @@ function TableList() {
         
         setDeleteLoading(true);
         try {
-            const response = await fetch(`${COMPANY_API_END_POINT}/companies/${deleteDialog.companyId}`, {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${COMPANY_API_END_POINT}/delete/${deleteDialog.companyId}`, {
                 method: 'DELETE',
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                credentials: 'include'
             });
             
             const data = await response.json();
             
             if (data.success) {
-                // Remove the deleted company from the state
                 setCompanies(companies.filter(company => company._id !== deleteDialog.companyId));
+                toast.success(data.message || 'Company deleted successfully');
             } else {
-                // Handle error case
-                alert('Failed to delete company: ' + data.message);
+                toast.error(data.message || 'Failed to delete company');
             }
         } catch (error) {
             console.error('Error deleting company:', error);
-            alert('An error occurred while deleting the company');
+            toast.error('An error occurred while deleting the company');
         } finally {
             setDeleteLoading(false);
             handleCloseDialog();

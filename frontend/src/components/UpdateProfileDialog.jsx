@@ -20,7 +20,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         phoneNumber: user?.phoneNumber || "",
         bio: user?.profile?.bio || "",
         skills: user?.profile?.skills?.join(', ') || "", // Assuming skills are stored as a comma-separated string
-        image: user?.profile?.resume || ""
+        file: user?.profile?.resume || ""
     });
 
     const dispatch = useDispatch();
@@ -30,8 +30,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     }
 
     const fileChangeHandler = (e) => {
-        const image = e.target.files?.[0];
-        setInput({ ...input, image })
+        const file = e.target.files?.[0];
+        setInput({ ...input, file }); 
     }
 
     const submitHandler = async (e) => {
@@ -42,8 +42,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         formData.append("phoneNumber", input.phoneNumber);
         formData.append("bio", input.bio);
         formData.append("skills", input.skills); // Assuming skills can be stored as a comma-separated string
-        if (input.image) {
-            formData.append("image", input.image);
+        if (input.file) {
+            formData.append("file", input.file);
         }
 
         try {
@@ -131,14 +131,14 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                 />
                             </div>
                             <div className='grid grid-cols-4 items-center gap-4'>
-                                <Label htmlFor="image" className="text-right">Resume</Label>
+                                <Label htmlFor="file" className="text-right">Resume</Label>
                                 <Input
                                     id="file"
-                                    name="image"
+                                    name="file"
                                     type="file"
                                     accept="application/pdf"
                                     onChange={fileChangeHandler}
-                                    className="col-span-3"
+                                    className="col-span-3 hover:bg-slate-100"
                                 />
                             </div>
                         </div>

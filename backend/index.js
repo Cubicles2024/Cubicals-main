@@ -12,9 +12,8 @@ import chartRoutes from "./routes/chart.route.js";
 import applicationRoute from "./routes/application.route.js";
 import blogRoutes from "./routes/blog.route.js"
 import b2bAnalyticsRoutes from "./routes/b2b.route.js";
-import { rate_limiter } from "./utils/rate-limiting.js";
 import setupSwagger from './docs/swaggerDocs.js';
-import { accessLogStream } from "./utils/morganConfig.js";
+import { accessLogStream, dualStream } from "./utils/morganConfig.js";
 dotenv.config({});
 
 const app = express();
@@ -25,15 +24,17 @@ const app = express();
 app.use(helmet());
 // app.use(rate_limiter);          // To prevent DOS attacks  [Fix too many requests error]
 app.use(cookieParser());
-app.use(morgan("combined", { stream: accessLogStream }));
+app.use(morgan("combined", { stream: dualStream }));
 // :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"
 
 // Built-in middlewares (3)
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 const corsOptions = {
-    origin:'http://localhost:5173',
-    credentials:true
+    origin: ['http://localhost:5173', "https://cubicles.netlify.app"],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Pragma']
 }
 
 app.use(cors(corsOptions));

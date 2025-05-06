@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '@mui/material';
 import { APPLICATION_API_END_POINT } from '@/utils/constant';
 import { setAllAppliedJobs } from '@/redux/jobSlice'; 
+import { toast } from 'sonner';
 
 const AppliedJobTable = () => {
     const dispatch = useDispatch(); 
@@ -21,7 +22,7 @@ const AppliedJobTable = () => {
                 throw new Error('Failed to withdraw application');
             }
 
-            alert('Application withdrawn successfully!');
+            toast.success('Application withdrawn successfully!');
 
             const updatedAppliedJobs = allAppliedJobs.filter(job => job._id !== id);
             dispatch(setAllAppliedJobs(updatedAppliedJobs));

@@ -18,7 +18,7 @@ const useGetAllJobs = () => {
                     withCredentials: true
                 });
                 if (res.data.success) {
-                    console.log(res.data.jobs)
+                    // console.log(res.data.jobs)
                     dispatch(setAllJobs(res.data.jobs));
                 }
             } catch (error) {

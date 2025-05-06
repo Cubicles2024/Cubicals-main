@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backend Test Report - 2025-05-03T22-07-06</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { padding: 20px; }
+    .test-summary { gap: 10px; }
+    .summary-card { text-align: center; padding: 15px; border-radius: 5px; }
+    .progress { height: 25px; }
+    .progress-bar { font-size: 14px; line-height: 25px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mb-4">Backend Test Report</h1>
+    <p class="text-muted">Generated on: Invalid Date</p>
+    
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="card summary-card bg-light">
+          <h3>18</h3>
+          <div>Total Tests</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card summary-card text-white bg-success">
+          <h3>18</h3>
+          <div>Passed</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card summary-card text-white bg-danger">
+          <h3>0</h3>
+          <div>Failed</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card summary-card text-white bg-warning">
+          <h3>0</h3>
+          <div>Pending</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="mb-4">
+      <h5>Pass Rate: 100%</h5>
+      <div class="progress">
+        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" 
+             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+      </div>
+    </div>
+    
+    <h2 class="mb-3">Test Results</h2>
+    
+      <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5>__tests__\models\job.test.js</h5>
+          <span class="badge bg-success">passed</span>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+    
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should create & save job successfully
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should fail to save job without required fields
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should fail to save job with invalid company reference
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+          </ul>
+        </div>
+      </div>
+    
+      <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5>__tests__\models\application.test.js</h5>
+          <span class="badge bg-success">passed</span>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+    
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should create & save application successfully
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should fail to save application without required fields
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should fail to save application with invalid status
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+          </ul>
+        </div>
+      </div>
+    
+      <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5>__tests__\models\company.test.js</h5>
+          <span class="badge bg-success">passed</span>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+    
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should create & save company successfully
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should fail to save company without required fields
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should fail to save company with invalid userId reference
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+          </ul>
+        </div>
+      </div>
+    
+      <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5>__tests__\models\user.test.js</h5>
+          <span class="badge bg-success">passed</span>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+    
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should create & save user successfully
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should fail to save user without required fields
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should fail to save user with invalid email format
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should fail to save user with invalid role
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+          </ul>
+        </div>
+      </div>
+    
+      <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5>__tests__\models\blog.test.js</h5>
+          <span class="badge bg-success">passed</span>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+    
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should create & save blog post successfully
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should fail to save blog without required fields
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should save blog without optional fields
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+          </ul>
+        </div>
+      </div>
+    
+      <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5>Benchmarks\test.js</h5>
+          <span class="badge bg-success">passed</span>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+    
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should measure collection statistics
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          should measure index performance
+          <span class="badge bg-success">passed</span>
+        </li>
+      
+          </ul>
+        </div>
+      </div>
+    
+  </div>
+</body>
+</html>

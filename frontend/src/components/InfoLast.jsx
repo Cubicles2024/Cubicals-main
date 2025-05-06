@@ -1,6 +1,9 @@
 import React from 'react'
 import { Button } from './ui/button'
 
+import calenderIcon from "../assets/icons8-calender-58.png"
+import githubLogo from "../assets/github-mark-logo.png"
+
 const InfoLast = () => {
   return (
     <div className='h-screen bg-black w-100vw'>
@@ -17,7 +20,7 @@ const InfoLast = () => {
             <div>
               <div className='w-auto flex gap-4' data-aos='fade-in'>
                 <Button className='bg-zinc-800 text-[13px] text-green-400 my-2 w-[80px] hover:bg-black'>Get Started</Button>
-                <a href='https://github.com/Cubicles2024'><Button className='bg-zinc-800 text-[13px] text-green-400 my-2 w-[120px] hover:bg-black border-2 rounded-2xl border-zinc-700'><img src='./src/assets/github-mark-logo.png' className='h-8 mr-2'/>Contribute</Button></a>
+                <a href='https://github.com/Cubicles2024'><Button className='bg-zinc-800 text-[13px] text-green-400 my-2 w-[120px] hover:bg-black border-2 rounded-2xl border-zinc-700'><img src={githubLogo} className='h-8 mr-2'/>Contribute</Button></a>
                 
               </div>
             </div>
@@ -28,7 +31,7 @@ const InfoLast = () => {
           <div className='flex mt-8'>
             <div data-aos='fade-right' className='mt-8 h-[18vh] ml-36 border-4 rounded-2xl border-transparent hover:border-4 cursor-not-allowed p-3 hover:border-zinc-800'>
               <div className='flex gap-2'>
-                <img src='/src/assets/icons8-calender-58.png' className='h-[20px]'/>
+                <img src={calenderIcon} className='h-[20px]'/>
                 <h3 className='text-[18px] font-bold'>
                   Getting Started
                 </h3>
@@ -42,7 +45,7 @@ const InfoLast = () => {
 
             <div data-aos='fade-right' className='mt-8 h-[18vh] border-4 rounded-2xl border-transparent hover:border-4 cursor-not-allowed p-3 hover:border-zinc-800'>
               <div className='flex gap-2'>
-                <img src='/src/assets/icons8-calender-58.png' className='h-[20px]'/>
+                <img src={calenderIcon} className='h-[20px]'/>
                 <h3 className='text-[18px] font-bold'>
                   Getting Started
                 </h3>

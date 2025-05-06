@@ -1,6 +1,7 @@
 import express from "express";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import applicationController from "../controllers/application.controller.js"; // Adjusted import
+import cacheMiddleware from '../middlewares/cacheMiddleware.js';
 
 const router = express.Router();
 
@@ -31,7 +32,7 @@ router.route("/status/:id").patch(isAuthenticated, applicationController.updateA
 // Get total number of applicants for all jobs
 router.get('/countApplicants', applicationController.getTotalApplicants);
 
-// Assuming you're using a router instance
+// Get number of applicants of a company
 router.get('/getApplicantCountsOfEachCompany', applicationController.getApplicantCountsOfEachCompany);
 
 

@@ -66,7 +66,7 @@ const CompanySetup = () => {
         formData.append("website", input.website);
         formData.append("location", input.location);
         if (input.file) {
-            formData.append("image", input.file);
+            formData.append("file", input.file);
         }
 
         try {
@@ -103,19 +103,19 @@ const CompanySetup = () => {
                     <div className='grid grid-cols-2 gap-4'>
                         <div>
                             <Label>Company Name</Label>
-                            <Input type="text" name="name" value={input.name} onChange={changeEventHandler} />
+                            <Input type="text" placeholder="Company Name" name="name" value={input.name} onChange={changeEventHandler} />
                         </div>
                         <div>
                             <Label>Description</Label>
-                            <Input type="text" name="description" value={input.description} onChange={changeEventHandler} />
+                            <Input type="text" placeholder="Add description" name="description" value={input.description} onChange={changeEventHandler} />
                         </div>
                         <div>
                             <Label>Website</Label>
-                            <Input type="text" name="website" value={input.website} onChange={changeEventHandler} />
+                            <Input type="text" placeholder="Add company description" name="website" value={input.website} onChange={changeEventHandler} />
                         </div>
                         <div>
                             <Label>Location</Label>
-                            <Input type="text" name="location" value={input.location} onChange={changeEventHandler} />
+                            <Input type="text" placeholder="Building No., Street, City, Country, pin-code" name="location" value={input.location} onChange={changeEventHandler} />
                         </div>
                         <div>
                             <Label>Logo</Label>

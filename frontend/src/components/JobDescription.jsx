@@ -8,6 +8,8 @@ import { setSingleJob } from '@/redux/jobSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import { ArrowLeft } from 'lucide-react'; // Using Lucide icon instead of image
+import Navbar from './shared/Navbar';
+import Footer from './shared/Footer';
 
 const JobDescription = () => {
     const { singleJob } = useSelector(store => store.job);
@@ -18,7 +20,10 @@ const JobDescription = () => {
     const navigate = useNavigate();
 
     const applyJobHandler = async () => {
-        if (!user) return navigate('/login');
+        if (!user){
+            navigate('/login');
+            return;
+        }
         
         try {
             const res = await axios.post(
@@ -44,9 +49,16 @@ const JobDescription = () => {
     useEffect(() => {
         const fetchSingleJob = async () => {
             try {
+                const token = user?.token;
+        
                 const res = await axios.get(
                     `${JOB_API_END_POINT}/get/${jobId}`,
-                    { withCredentials: false }
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                        withCredentials: true
+                    }
                 );
                 
                 if (res.data.success) {
@@ -63,6 +75,8 @@ const JobDescription = () => {
     }, [jobId, dispatch, user?._id]);
 
     return (
+        <>
+        <Navbar/>
         <div className="max-w-6xl mx-auto px-4 py-12 space-y-8">
             {/* Header Section */}
             <div className="space-y-4">
@@ -140,6 +154,8 @@ const JobDescription = () => {
                 </p>
             </div>
         </div>
+        <Footer/>
+        </>
     );
 };
 

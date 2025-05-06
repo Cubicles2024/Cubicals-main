@@ -34,6 +34,9 @@ import EditJob from './components/admin/EditJob'
 import SupremeProtectedRoute from './components/superUser/Components/SupremeProtectedRoute'
 import ViewUserProfile from './components/admin/ViewUserProfile'
 import BlogProtectedRoute from './components/auth/BlogProtectedRoute'
+import { useEffect, useState } from 'react'
+import LoadingPage from './components/shared/LoadingPage'
+import PostDetail from './components/blogComponents/PostDetail'
 // import EditJob from './components/admin/EditJob'
 
 
@@ -87,6 +90,10 @@ const appRouter = createBrowserRouter([
   {
     path: "/blog/myBlogs",
     element: <MyBlogs/>
+  },
+  {
+    path: "/blog/post/:id",
+    element: <PostDetail/>
   },
 
   // admin ke liye yha se start hoga
@@ -190,10 +197,26 @@ supreme user starts here
 ])
 function App() {
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading process
+    const timer = setTimeout(() => setIsLoading(false), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div>
-      <RouterProvider router={appRouter} />
-    </div>
+    <>
+      {/* {isLoading ? <LoadingPage/> : (
+        <div>
+          <RouterProvider router={appRouter} />
+        </div>
+      )} */}
+
+        <div>
+          <RouterProvider router={appRouter} />
+        </div>
+    </>
   )
 }
 

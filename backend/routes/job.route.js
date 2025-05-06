@@ -1,25 +1,16 @@
 import express from "express";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import jobController from "../controllers/job.controller.js"; 
+import cacheMiddleware from '../middlewares/cacheMiddleware.js';
 
 const router = express.Router();
 
-// Route to post a new job
 router.route("/post").post(isAuthenticated, jobController.postJob);
-
-// Route to get all jobs for students
-router.route("/get").get( jobController.getAllJobs);
-
-// Route to get all jobs created by the admin (GET method)
-router.route("/getadminjobs").get(isAuthenticated, jobController.getAdminJobs);
-
-// Route to get a specific job by ID (GET method)
-router.route("/get/:id").get(jobController.getJobById);
-
-// Route to get the count of all jobs (GET method)
-router.route("/count").get(jobController.getJobCount); 
-
-//Route to update a job
+router.route("/get").get(cacheMiddleware(300), jobController.getAllJobs);
+router.route("/getadminjobs").get(isAuthenticated, jobController.getAdminJobs); 
+router.route("/get/:id").get(cacheMiddleware(300), jobController.getJobById); 
+router.route("/count").get(cacheMiddleware(300), jobController.getJobCount); 
 router.route("/update/:id").put(isAuthenticated, jobController.updateJob);
+router.route("/delete/:id").delete(isAuthenticated, jobController.deleteJob);
 
 export default router;

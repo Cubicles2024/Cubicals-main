@@ -30,14 +30,14 @@ function ProgressBar() {
     return (
         <div className="progress_bar">
             <div className="top">
-                <p>Total Job Applications [...For next review 🙂 ]</p>
-                <MoreVertOutlinedIcon />
+                <p>Admin Charts 🙂</p>
+                {/* <MoreVertOutlinedIcon /> */}
             </div>
 
             <div className="middle">
                 <div className="progress">
                     {loading ? (
-                        <p>Loading...</p>
+                        <p></p>
                     ) : error ? (
                         <p>{error}</p>
                     ) : (
@@ -69,7 +69,7 @@ function ProgressBar() {
                         </ResponsiveContainer>
                     )}
                 </div>
-                <p>Total new Jobs : )</p> {/* Displaying dynamic job count */}
+                <p>Check out the admin charts</p> {/* Displaying dynamic job count */}
             </div>
 
                 {/* <div className="bottom">

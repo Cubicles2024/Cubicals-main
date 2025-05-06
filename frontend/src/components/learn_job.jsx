@@ -10,6 +10,23 @@ import { Users } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Footer from "./shared/Footer";
 
+import newWebp from '@/assets/learn/new.webp'
+import new1Jpg from '@/assets/learn/new1.jpg'
+import new2Jpg from '@/assets/learn/new2.jpg'
+import new3Jpg from '@/assets/learn/new3.jpg'
+import new4Jpg from '@/assets/learn/new4.jpg'
+import new5Jpg from '@/assets/learn/new5.jpg'
+import reactPng from '@/assets/learn/react.png'
+import nodeWebp from '@/assets/learn/node.webp'
+import uiuxWebp from '@/assets/learn/uiux.webp'
+import dockerPng from '@/assets/learn/docker.png'
+import graphqlJpg from '@/assets/learn/graphql.jpg'
+import flutterPng from '@/assets/learn/flutter.png'
+import vueJpg from '@/assets/learn/vue.jpg'
+import rustWebp from '@/assets/learn/rust.webp'
+import waWebp from '@/assets/learn/wa.webp'
+import sveltePng from '@/assets/learn/svelte.png'
+
 const LearnJob = () => {
   const navigate = useNavigate();
 
@@ -167,7 +184,7 @@ const trendingCourses = [
         author: "Dr. Alan Turing",
         duration: "8h 15m",
         level: "Intermediate",
-        image: "/src/assets/learn/new.webp",
+        image: newWebp,
         trending: true
     },
     {
@@ -175,7 +192,7 @@ const trendingCourses = [
         author: "Satoshi Nakamoto",
         duration: "6h 30m",
         level: "Advanced",
-        image: "/src/assets/learn/new1.jpg",
+        image: new1Jpg,
         trending: true
     },
     {
@@ -183,7 +200,7 @@ const trendingCourses = [
         author: "Lisa Creative",
         duration: "5h 45m",
         level: "Beginner",
-        image: "/src/assets/learn/new2.jpg",
+        image: new2Jpg,
         trending: true
     }
 ];
@@ -194,7 +211,7 @@ const topPicks = [
     author: "Frontend Expert",
     duration: "28h 45m",
     level: "Intermediate",
-    image: "/src/assets/learn/react.png",
+    image: reactPng,
     badge: "Popular"
   },
   {
@@ -202,7 +219,7 @@ const topPicks = [
     author: "Backend Guru",
     duration: "32h 15m",
     level: "Advanced",
-    image: "/src/assets/learn/node.webp",
+    image: nodeWebp,
     badge: "Hot"
   },
   {
@@ -210,7 +227,7 @@ const topPicks = [
     author: "Design Master",
     duration: "24h 30m",
     level: "Beginner",
-    image: "/src/assets/learn/uiux.webp",
+    image: uiuxWebp,
     badge: "New"
   }
 ]
@@ -230,7 +247,7 @@ const weeklyTopCourses = [
     author: "DevOps Pro",
     duration: "15h 30m",
     level: "Intermediate",
-    image: "/src/assets/learn/docker.png",
+    image: dockerPng,
     badge: "Trending"
   },
   {
@@ -238,7 +255,7 @@ const weeklyTopCourses = [
     author: "API Expert",
     duration: "12h 45m",
     level: "Advanced",
-    image: "/src/assets/learn/graphql.jpg",
+    image: graphqlJpg,
     badge: "Hot"
   },
   {
@@ -246,7 +263,7 @@ const weeklyTopCourses = [
     author: "Mobile Dev Master",
     duration: "28h 15m",
     level: "Intermediate",
-    image: "/src/assets/learn/flutter.png",
+    image: flutterPng,
     badge: "Popular"
   },
   {
@@ -254,7 +271,7 @@ const weeklyTopCourses = [
     author: "Frontend Guru",
     duration: "20h 30m",
     level: "Beginner",
-    image: "/src/assets/learn/vue.jpg",
+    image: vueJpg,
     badge: "New"
   }
 ]
@@ -265,7 +282,7 @@ const newCourses = [
         author: "Dr. Quantum",
         duration: "4h 30m",
         level: "Beginner",
-        image: "src/assets/learn/new3.jpg",
+        image: new3Jpg,
         new: true
     },
     {
@@ -273,7 +290,7 @@ const newCourses = [
         author: "Network Ninja",
         duration: "7h 15m",
         level: "Intermediate",
-        image: "src/assets/learn/new4.jpg",
+        image: new4Jpg,
         new: true
     },
     {
@@ -281,7 +298,7 @@ const newCourses = [
         author: "Hack Preventer",
         duration: "6h 00m",
         level: "All Levels",
-        image: "src/assets/learn/new5.jpg",
+        image: new5Jpg,
         new: true
     }
 ];
@@ -292,7 +309,7 @@ const newReleases = [
     author: "Systems Expert",
     duration: "18h 45m",
     level: "Advanced",
-    image: "/src/assets/learn/rust.webp",
+    image: rustWebp,
     badge: "New"
   },
   {
@@ -300,7 +317,7 @@ const newReleases = [
     author: "Web Performance Guru",
     duration: "14h 30m",
     level: "Intermediate",
-    image: "/src/assets/learn/wa.webp",
+    image: waWebp,
     badge: "New"
   },
   {
@@ -308,7 +325,7 @@ const newReleases = [
     author: "Frontend Master",
     duration: "16h 15m",
     level: "Intermediate",
-    image: "/src/assets/learn/svelte.png",
+    image: sveltePng,
     badge: "New"
   }
 ]

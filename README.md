@@ -1,6 +1,8 @@
 # Cubicles
 Cubicles is a job portal application that helps job seekers find opportunities and employers post job listings. The project aims to simplify the job search process and provide insights for getting hired faster in the Human Resource Management System (HRMS) domain.
 
+-  Check out our **Live site**: https://cubicles.netlify.app/
+
 ---
 
 ## Table of Contents
@@ -16,10 +18,11 @@ Cubicles is a job portal application that helps job seekers find opportunities a
 6. [API Documentation](#cubicles-api-documentation)
 6. [Installation & Setup](#installation-and-setup-guide)
 7. [Logging & Monitoring](#logging-and-monitoring)
-8. [Security](#security-and-authentication)
-9. [Contribution Guidelines](#contribution-guidelines-for-cubicles)
-10. [Team Details](#cubicles-team-details)
-11. [Conclusion](#conclusion)
+8. [Testing](#testing)
+9. [Security](#security-and-authentication)
+10. [Contribution Guidelines](#contribution-guidelines-for-cubicles)
+11. [Team Details](#cubicles-team-details)
+12. [Conclusion](#conclusion) 
 
 ---
 
@@ -371,6 +374,13 @@ npm run db:backup
 ## Logging and monitoring
 - **Logging:** Use Winston and Morgan for structured logging.
 ---
+## Testing 
+### Frontend:
+[https://github.com/Cubicles2024/Cubicals-main/tree/main/frontend/reports]()
+### Backend: 
+[https://github.com/Cubicles2024/Cubicals-main/blob/main/backend/__tests__/Readme.md]()
+
+---
 ## Security And Authentication
 - **JWT Authentication:** Secure token-based authentication.
 - **Helmet:** Added to enhance security by setting various HTTP headers.
@@ -378,6 +388,7 @@ npm run db:backup
 - **Rate Limiting:** Configured to mitigate brute-force attacks.
 - **CORS:** Properly configured to allow requests from trusted origins.
 ---
+
 
 ## Contribution Guidelines for Cubicles
 

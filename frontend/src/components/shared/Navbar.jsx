@@ -10,6 +10,7 @@ import { USER_API_END_POINT } from '@/utils/constant';
 import { setUser } from '@/redux/authSlice';
 import { toast } from 'sonner';
 import DropDown from '../ui/drop-down';
+// import UserFallBack from "@assets/user.png"
 
 const Navbar = () => {
     const { user } = useSelector(store => store.auth);
@@ -118,7 +119,7 @@ const Navbar = () => {
                             <PopoverTrigger asChild>
                                 <Avatar className="cursor-pointer border-2 border-purple-500/50">
                                     <AvatarImage 
-                                        src={user?.profile?.profilePhoto || "/src/assets/user.png"} 
+                                        src={user?.profile?.profilePhoto || "https://tse3.mm.bing.net/th/id/OIP.Wkn4_kVHLYYZOOy7FMnFXwHaHa?pid=ImgDet&w=188&h=188&c=7&dpr=1.5"} 
                                         alt="profile-img" 
                                     />
                                 </Avatar>
@@ -129,7 +130,7 @@ const Navbar = () => {
                                     <div className="flex gap-3 items-center">
                                         <Avatar className="w-12 h-12 border-2 border-purple-500/50">
                                             <AvatarImage 
-                                                src={user?.profile?.profilePhoto || "/src/assets/user.png"} 
+                                                src={user?.profile?.profilePhoto || "https://tse3.mm.bing.net/th/id/OIP.Wkn4_kVHLYYZOOy7FMnFXwHaHa?pid=ImgDet&w=188&h=188&c=7&dpr=1.5"} 
                                                 alt="@shadcn" 
                                             />
                                         </Avatar>

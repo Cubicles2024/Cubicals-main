@@ -2,6 +2,7 @@ import express from "express";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import companyController from "../controllers/company.controller.js"; 
 import { singleUpload } from "../middlewares/mutler.js";
+import cacheMiddleware from '../middlewares/cacheMiddleware.js';
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ router.route("/update/:id").put(isAuthenticated, singleUpload, companyController
 router.route("/add").post(isAuthenticated, singleUpload, companyController.addCompany);
 
 // Add this route to get all companies
-router.get('/companies/all', companyController.getAllCompanies); 
+router.get('/companies/all', cacheMiddleware(300), companyController.getAllCompanies);
 
 //Rouet to get all the recruiters
 router.get('/companyCount', companyController.companyCount);

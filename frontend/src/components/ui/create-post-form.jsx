@@ -88,6 +88,9 @@ export default function CreatePostForm() {
     try {
       const res = await axios.post(`${BLOG_API_END_POINT}/createPost`, postData, {
         withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
       if (res.data.success) {
         toast.success(res.data.message);

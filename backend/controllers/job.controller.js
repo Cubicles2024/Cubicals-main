@@ -83,7 +83,10 @@ class JobController {
   async getAdminJobs(req, res, next) {
     try {
       const adminId = req.id;
-      const jobs = await Job.find({ created_by: adminId }).populate({ path: 'company' });
+      const jobs = await Job.find({ created_by: adminId })
+      .sort({ createdAt: -1 }) 
+      .populate({ path: 'company' });
+
 
       if (jobs.length === 0) {
         return res.status(404).json({ message: "Jobs not found.", success: false });
@@ -99,12 +102,12 @@ class JobController {
   async updateJob(req, res, next) {
     try {
       const jobID = req.params.id;
-  
+      console.log("triggred")
       if (!jobID) {
         return res.status(404).json({ message: "Job not found!", success: false });
       }
   
-      const updatedJob = await Job.findByIdAndUpdate(jobID, { $set: req.body.input }, { new: true });
+      const updatedJob = await Job.findByIdAndUpdate(jobID, { $set: req.body }, { new: true });
   
       if (!updatedJob) {
         return res.status(404).json({ message: "Job not found!", success: false });
@@ -116,6 +119,28 @@ class JobController {
       next(err);
     }
   }
+
+  // Delete a job by ID
+  async deleteJob(req, res, next) {
+    try {
+      const jobId = req.params.id;
+
+      if (!jobId) {
+        return res.status(400).json({ message: "Job ID is required.", success: false });
+      }
+
+      const deletedJob = await Job.findByIdAndDelete(jobId);
+
+      if (!deletedJob) {
+        return res.status(404).json({ message: "Job not found.", success: false });
+      }
+
+      return res.status(200).json({ message: "Job deleted successfully.", success: true });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   
 }
 
