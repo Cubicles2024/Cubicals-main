@@ -1,1 +1,79 @@
-1. AJ Harsh Vardhan
+Blog routes
+
+
+
+GET : http://localhost:3000/api/v1/blog/
+
+will give you all the available blogs in the database 
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+User auth is needed: 
+
+POST :http://localhost:3000/api/v1/blog/create
+
+input : 
+
+{
+  "title": "My First Blog Post",
+  "content": "This is the content of my first blog post. It can be as long as needed.",
+  "tags": ["Tech", "Programming", "JavaScript"],
+  "image": "https://path/to/your/image.jpg"
+}
+
+------------------------------------------------------------------------------------------------------------------
+
+GET :  http://localhost:3000/api/v1/blog/:id 
+outputs : 
+
+{
+    "_id": "674d975d0d143b68bcc88720",
+    "title": "My secound Blog Post",
+    "content": "This is the content of my secound blog post. It can be as long as needed.",
+    "author": {
+        "_id": "674d954c3fbde048b305f1b5",
+        "fullname": "varun",
+        "email": "varun@gmail.com"
+    },
+    "tags": [
+        "Tech2",
+        "Programming2",
+        "JavaScript2"
+    ],
+    "image": "https://path/to/your/image.jpg",
+    "createdAt": "2024-12-02T11:17:49.523Z",
+    "updatedAt": "2024-12-02T11:17:49.523Z",
+    "__v": 0
+}
+--------------------------------------------------------------------------------------------------------------------
+POST : http://localhost:3000/api/v1/blog/674d975d0d143b68bcc88720/comments
+
+input: 
+
+{
+  "content": "Great blog post! I learned a lot about programming basics."
+}
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+GET : http://localhost:3000/api/v1/blog/674d975d0d143b68bcc88720/comments
+
+output : 
+
+[
+    {
+        "_id": "674d98358f4bac7e840ffb5d",
+        "content": "Great blog post! I learned a lot about programming basics.",
+        "author": {
+            "_id": "674d954c3fbde048b305f1b5",
+            "fullname": "varun",
+            "email": "varun@gmail.com"
+        },
+        "blog": "674d975d0d143b68bcc88720",
+        "createdAt": "2024-12-02T11:21:25.306Z",
+        "updatedAt": "2024-12-02T11:21:25.306Z",
+        "__v": 0
+    }
+]

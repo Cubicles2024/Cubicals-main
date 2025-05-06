@@ -7,19 +7,19 @@ import './chart.scss';
 const data = [
     {
         name: 'January',
-        total: 700,
+        total: 0,
     },
     {
         name: 'February',
-        total: 1250,
+        total: 1000
     },
     {
         name: 'March',
-        total: 1410,
+        total: 410,
     },
     {
         name: 'April',
-        total: 1100,
+        total: 100,
     },
     {
         name: 'May',
@@ -35,7 +35,7 @@ const data = [
     },
     {
         name: 'August',
-        total: 1050,
+        total:  0,
     },
     {
         name: 'September',
@@ -51,7 +51,7 @@ const data = [
     },
     {
         name: 'December',
-        total: 1250,
+        total: 0,
     },
 ];
 
@@ -60,7 +60,7 @@ function Chart({ height, title }) {
         <div className="chart_sec">
             <div>
                 <div className="title">
-                    <p>{title} (Last 1 year)</p>
+                    <p>{title} </p>
                 </div>
 
                 <div style={{ width: '100%', height: 300 }}>
@@ -72,10 +72,11 @@ function Chart({ height, title }) {
                         margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
                     >
                         <defs>
-                            <linearGradient id="totals" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#536def" stopOpacity={0.9} />
-                                <stop offset="95%" stopColor="#536def" stopOpacity={0} />
-                            </linearGradient>
+                        <linearGradient id="totals" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#301934" stopOpacity={0.9} />
+                            <stop offset="95%" stopColor="#4B0082" stopOpacity={0} />
+                        </linearGradient>
+
                         </defs>
                         <XAxis dataKey="name" stroke="gray" />
                         <CartesianGrid strokeDasharray="3 3" className="strokee" />

@@ -23,12 +23,12 @@ function DataTable() {
                 if (result.success) {
                     const formattedData = result.applications.map((app) => ({
                         id: app._id,
-                        name: app.applicant.fullname, 
+                        name: app.applicant.fullname,
                         email: app.applicant.email,
                         status: app.status,
                         company: app.job.company.name,
                     }));
-        
+
                     setData(formattedData);
                 }
             } catch (err) {
@@ -36,7 +36,7 @@ function DataTable() {
             } finally {
                 setLoading(false);
             }
-        };        
+        };
 
         fetchData();
     }, []);
@@ -44,25 +44,25 @@ function DataTable() {
     const handleDlt = async (id) => {
         const confirmed = window.confirm("Are you sure you want to delete this application?");
         if (!confirmed) return;
-    
+
         try {
             console.log(`${APPLICATION_API_END_POINT}/delete/${id}`);
             const response = await fetch(`${APPLICATION_API_END_POINT}/delete/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
-    
+
             if (!response.ok) {
                 throw new Error('Failed to delete the application');
             }
-    
+
             setData((prevData) => prevData.filter((item) => item.id !== id));
         } catch (err) {
             setError("Could not delete the application. Please try again.");
-            console.error(err); 
+            console.error(err);
         }
     };
-    
+
 
     const columns = [
         {
@@ -97,9 +97,11 @@ function DataTable() {
             width: 170,
             renderCell: (params) => (
                 <div className="actionn">
-                    <Link to={params.row.id}>
+
+                    {/* <Link to={`/supreme/applicants/view/${params.row.id}`}>
                         <button type="button" className="view_btn">View</button>
-                    </Link>
+                    </Link> */}
+
                     <button type="button" className="delete_btn" onClick={() => handleDlt(params.row.id)}>
                         Delete
                     </button>
@@ -109,11 +111,11 @@ function DataTable() {
     ];
 
     if (loading) {
-        return <div>Loading...</div>; 
+        return <div>Loading...</div>;
     }
 
     if (error) {
-        return <div>Error: {error}</div>; 
+        return <div>Error: {error}</div>;
     }
 
     return (

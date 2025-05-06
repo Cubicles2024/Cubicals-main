@@ -9,7 +9,7 @@ import axios from 'axios'
 import { USER_API_END_POINT } from '@/utils/constant'
 import { toast } from 'sonner'
 import { useDispatch, useSelector } from 'react-redux'
-import { setLoading, setUser } from '@/red/authSlice'
+import { setLoading, setUser } from '@/redux/authSlice'
 import { Loader2 } from 'lucide-react'
 
 const Login = () => {
@@ -73,7 +73,12 @@ const Login = () => {
         <div>
             <Navbar />
             <div className='flex items-center justify-center max-w-7xl mx-auto'>
-                <form onSubmit={submitHandler} className='w-1/2 border border-gray-200 shadow shadow-zinc-300 rounded-md p-4 my-10'>
+                <form 
+                    onSubmit={submitHandler}
+                    role="form"
+                    aria-label="Login form"
+                    className='w-1/2 border border-gray-200 shadow shadow-zinc-300 rounded-md p-4 my-10'
+                >
                     <h1 className='font-bold text-xl mb-5'>Login</h1>
                     <div className='my-2'>
                         <Label>Email</Label>

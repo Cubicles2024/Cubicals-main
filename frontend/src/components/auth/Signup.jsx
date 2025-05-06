@@ -5,11 +5,10 @@ import { Input } from '../ui/input';
 import { RadioGroup } from '../ui/radio-group';
 import { Button } from '../ui/button';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { USER_API_END_POINT } from '@/utils/constant';
 import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoading } from '@/red/authSlice';
+import { setLoading } from '@/redux/authSlice';
 import { Loader2 } from 'lucide-react';
 
 const Signup = () => {
@@ -79,7 +78,7 @@ const Signup = () => {
         // Handle success and error responses
         xhr.onload = function () {
             const res = JSON.parse(xhr.responseText);
-            if (xhr.status === 200 && res.success) {
+            if (xhr.status === 200 || res.success) {
                 navigate('/login');
                 toast.success(res.message);
             } else {
@@ -122,7 +121,7 @@ const Signup = () => {
                             value={input.fullname}
                             name="fullname"
                             onChange={changeEventHandler}
-                            placeholder="Ayush Singhai"
+                            placeholder="AJ Harsh Vardhan"
                         />
                     </div>
 
@@ -134,7 +133,7 @@ const Signup = () => {
                             value={input.email}
                             name="email"
                             onChange={changeEventHandler}
-                            placeholder="ayush@gmail.com"
+                            placeholder="harsh@gmail.com"
                         />
                     </div>
 

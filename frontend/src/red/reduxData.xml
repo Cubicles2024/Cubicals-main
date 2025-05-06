@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redux>
+    <authSlice>
+        <loading>false</loading>
+        <user>null</user>
+    </authSlice>
+    <jobSlice>
+        <allJobs/>
+        <allAdminJobs/>
+        <singleJob>null</singleJob>
+        <searchJobByText></searchJobByText>
+        <allAppliedJobs/>
+        <searchedQuery></searchedQuery>
+    </jobSlice>
+    <companySlice>
+        <singleCompany>null</singleCompany>
+        <companies/>
+        <searchCompanyByText></searchCompanyByText>
+    </companySlice>
+    <applicationSlice>
+        <applicants>null</applicants>
+    </applicationSlice>
+</redux>

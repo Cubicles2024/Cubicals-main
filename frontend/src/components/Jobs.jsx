@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from './shared/Navbar'
-import FilterCard from './FilterCard'
+import React, { useEffect, useState } from 'react';
+import Navbar from './shared/Navbar';
+import FilterCard from './FilterCard';
 import Job from './Job';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
-
-// const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8];  
+import { setSearchedQuery } from '@/redux/jobSlice';
 
 const Jobs = () => {
     const { allJobs, searchedQuery } = useSelector(store => store.job);
+    const dispatch = useDispatch();
     const [filterJobs, setFilterJobs] = useState(allJobs);
 
     useEffect(() => {
@@ -16,13 +16,17 @@ const Jobs = () => {
             const filteredJobs = allJobs.filter((job) => {
                 return job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
                     job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-                    job.location.toLowerCase().includes(searchedQuery.toLowerCase())
-            })
-            setFilterJobs(filteredJobs)
+                    job.location.toLowerCase().includes(searchedQuery.toLowerCase());
+            });
+            setFilterJobs(filteredJobs);
         } else {
-            setFilterJobs(allJobs)
+            setFilterJobs(allJobs);
         }
     }, [allJobs, searchedQuery]);
+
+    const handleSearch = (e) => {
+        dispatch(setSearchedQuery(e.target.value));
+    };
 
     return (
         <div>
@@ -54,10 +58,8 @@ const Jobs = () => {
                     }
                 </div>
             </div>
-
-
         </div>
-    )
-}
+    );
+};
 
-export default Jobs
+export default Jobs;

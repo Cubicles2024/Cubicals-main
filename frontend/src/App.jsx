@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Navbar from './components/shared/Navbar'
 import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
 import Home from './components/Home'
@@ -14,10 +13,30 @@ import AdminJobs from "./components/admin/AdminJobs";
 import PostJob from './components/admin/PostJob'
 import Applicants from './components/admin/Applicants'
 import ProtectedRoute from './components/admin/ProtectedRoute'
+//super user imports
 import AdminHome from './components/superUser/Components/adminHome/adminHome'
 import Lists from './components/superUser/Pages/UserLists/UserLists'
 import Orders from './components/superUser/Components/Orders/Orders'
 import SuperLogin from './components/superUser/Components/Login/SuperLogin'
+import AddNewApplicant from './components/superUser/Pages/AddNew/AddNewApplicant'
+import AddNewCompany from './components/superUser/Pages/AddNew/AddNewCompany'
+import AddNewRecruiter from './components/superUser/Pages/AddNew/AddNewRecruiter'
+//super user imports end
+import ProErr from './components/ProErr'
+import NotFoundErr from './components/NotFoundErr'
+import LearnMore from './components/LearnMore'
+import LearnJob from './components/learn_job' // Add this import
+import BlogHome from './components/blogComponents/BlogHome/BlogHome'
+import CreatePost from './components/blogComponents/CreatePost'
+import MyBlogs from './components/blogComponents/MyBlogs/MyBlogs'
+import Pricing from './components/pricing'
+import EditJob from './components/admin/EditJob'
+import SupremeProtectedRoute from './components/superUser/Components/SupremeProtectedRoute'
+import ViewUserProfile from './components/admin/ViewUserProfile'
+import BlogProtectedRoute from './components/auth/BlogProtectedRoute'
+import { useEffect, useState } from 'react'
+import LoadingPage from './components/shared/LoadingPage'
+import PostDetail from './components/blogComponents/PostDetail'
 // import EditJob from './components/admin/EditJob'
 
 
@@ -50,6 +69,33 @@ const appRouter = createBrowserRouter([
     path: "/profile",
     element: <Profile />
   },
+  {
+    path: "/learn-more",
+    element: <LearnMore />
+  },
+  {
+    path: "/learn", // Add this new route
+    element: <LearnJob />
+  },
+
+  // **For blog pages**
+  {
+    path: "/blog",
+    element: <BlogHome/>
+  },
+  {
+    path: "/blog/createPost",
+    element: <BlogProtectedRoute><CreatePost/></BlogProtectedRoute>
+  },
+  {
+    path: "/blog/myBlogs",
+    element: <MyBlogs/>
+  },
+  {
+    path: "/blog/post/:id",
+    element: <PostDetail/>
+  },
+
   // admin ke liye yha se start hoga
   {
     path: "/admin/companies",
@@ -72,16 +118,32 @@ const appRouter = createBrowserRouter([
     element: <ProtectedRoute><PostJob /></ProtectedRoute>
   },
   {
+    path: "/admin/jobs/edit/:id",
+    element: <ProtectedRoute><EditJob /></ProtectedRoute>
+  },
+  {
     path: "/admin/jobs/:id/applicants",
     element: <ProtectedRoute><Applicants /></ProtectedRoute>
   },
+  {
+    path: "/view-user-profile/:userId", 
+    element: <ProtectedRoute><ViewUserProfile /></ProtectedRoute>
+  },
+
   // {
   //   path: "/admin/EditJob/:id",
   //   element: <ProtectedRoute><EditJob /></ProtectedRoute>
   // },
-  {
+
+  // **For supreme user (highest level)**
+
+
+/*
+supreme user starts here
+*/
+{
     path: "/supreme",
-    element: <SuperLogin />
+    element: <SupremeProtectedRoute><SuperLogin /></SupremeProtectedRoute>
   },
   {
     path: "/supreme/adminHome",
@@ -101,17 +163,60 @@ const appRouter = createBrowserRouter([
     element: <ProtectedRoute><Lists type="companies" /></ProtectedRoute>
   },
   {
+    path: "/supreme/applicants/add",
+    element: <ProtectedRoute><AddNewApplicant/></ProtectedRoute>
+  },
+  {
+    path: "/supreme/recruiters/add",
+    element: <ProtectedRoute><AddNewRecruiter /></ProtectedRoute>
+  },
+  {
+    path: "/supreme/Companies/add",
+    element: <ProtectedRoute><AddNewCompany/></ProtectedRoute>
+  },
+  /*
+  supreme user ends here
+  */
+  {
+    path:"/pricing",
+    element:<Pricing />
+  },
+  {
     path: "/supreme/JobVacancies",
     element: <ProtectedRoute><Orders /></ProtectedRoute>
+  },
+  {
+    path:"/proErr",
+    element:<ProErr/>
+  },
+  {
+    path:"*",
+    element:<NotFoundErr/>
   },
 
 ])
 function App() {
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading process
+    const timer = setTimeout(() => setIsLoading(false), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div>
-      <RouterProvider router={appRouter} />
-    </div>
+    <>
+      {/* {isLoading ? <LoadingPage/> : (
+        <div>
+          <RouterProvider router={appRouter} />
+        </div>
+      )} */}
+
+        <div>
+          <RouterProvider router={appRouter} />
+        </div>
+    </>
   )
 }
 

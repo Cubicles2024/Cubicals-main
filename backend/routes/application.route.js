@@ -1,6 +1,7 @@
 import express from "express";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import applicationController from "../controllers/application.controller.js"; // Adjusted import
+import cacheMiddleware from '../middlewares/cacheMiddleware.js';
 
 const router = express.Router();
 
@@ -28,6 +29,11 @@ router.route("/delete/:id").delete(isAuthenticated, applicationController.delete
 // Route for recruiter to accept/reject an application (PATCH method)
 router.route("/status/:id").patch(isAuthenticated, applicationController.updateApplicationStatus);
 
+// Get total number of applicants for all jobs
+router.get('/countApplicants', applicationController.getTotalApplicants);
+
+// Get number of applicants of a company
+router.get('/getApplicantCountsOfEachCompany', applicationController.getApplicantCountsOfEachCompany);
 
 
 export default router;

@@ -11,7 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Sidebar.scss';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
-import { setUser } from '@/red/authSlice';
+import { setUser } from '@/redux/authSlice';
 import { toast } from 'sonner';
 import { USER_API_END_POINT } from '@/utils/constant';
 import { useDispatch } from 'react-redux';
@@ -31,14 +31,14 @@ function Sidebar() {
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message);
+            toast.success("Logout Successful!");
         }
     }
     return (
         <div className="sidebar">
             <div className="logo">
                 <Link to="/supreme" style={{ textDecoration: 'none' }}>
-                    <h3 className="text_none">Admin Dashboard</h3>
+                    <h3 className="text_none font-bold">Admin Dashboard</h3>
                 </Link>
             </div>
 
@@ -68,12 +68,7 @@ function Sidebar() {
                             <TableChartIcon className="icon" /> Companies
                         </li>
                     </Link>
-                    <Link to="/supreme/JobVacancies" style={{ textDecoration: 'none' }}>
-                        <li>
-                            <CreditCardIcon className="icon" /> Job Vacancies
-                        </li>
-                    </Link>
-
+            
                     <p className="spann">Seetings</p>
 
                     <li className='hover:bg-transparent'>

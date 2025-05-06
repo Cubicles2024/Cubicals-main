@@ -9,7 +9,7 @@ import axios from 'axios'
 import { JOB_API_END_POINT } from '@/utils/constant'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
-import { Loader2 } from 'lucide-react'
+import { ArrowLeft, Loader2 } from 'lucide-react'
 
 const companyArray = [];
 
@@ -62,14 +62,29 @@ const PostJob = () => {
     return (
         <div>
             <Navbar />
+
             <div className='flex items-center justify-center w-screen my-5'>
+                
                 <form onSubmit = {submitHandler} className='p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md'>
+                    {/* Back Button */}
+                    <button
+                        type="button"
+                        onClick={() => navigate(-1)}
+                        className=" flex items-center gap-2 p-2 mb-4 rounded-sm text-sm text-slate-100 bg-black hover:text-white hover:bg-slate-950 transition-colors"
+                    >
+                        <ArrowLeft className="h-5 w-5" />
+                        <span className="text-sm font-medium">Back</span>
+                    </button>
+
                     <div className='grid grid-cols-2 gap-2'>
+                        
                         <div>
+                            
                             <Label>Title</Label>
                             <Input
                                 type="text"
                                 name="title"
+                                placeholder="Job position"
                                 value={input.title}
                                 onChange={changeEventHandler}
                                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
@@ -80,6 +95,7 @@ const PostJob = () => {
                             <Input
                                 type="text"
                                 name="description"
+                                placeholder="Job description"
                                 value={input.description}
                                 onChange={changeEventHandler}
                                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
@@ -90,6 +106,7 @@ const PostJob = () => {
                             <Input
                                 type="text"
                                 name="requirements"
+                                placeholder="Job Requirements"
                                 value={input.requirements}
                                 onChange={changeEventHandler}
                                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
@@ -98,9 +115,10 @@ const PostJob = () => {
                         <div>
                             <Label>Salary</Label>
                             <Input
-                                type="text"
+                                type="number"
                                 name="salary"
                                 value={input.salary}
+                                placeholder="in LPA"
                                 onChange={changeEventHandler}
                                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
                             />
@@ -174,6 +192,7 @@ const PostJob = () => {
                         companies.length === 0 && <p className='text-xs text-red-600 font-bold text-center my-3'>*Please register a company first, before posting a jobs</p>
                     }
                 </form>
+                
             </div>
         </div>
     )

@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './tableList.scss';
 
 // mui table
@@ -11,114 +11,178 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-// import dummy image
-import book1 from '../../../../assets/superuser-dashboard/book1.jpg';
-import book2 from '../../../../assets/superuser-dashboard/book2.jpg';
-import book3 from '../../../../assets/superuser-dashboard/book3.jpg';
-import book4 from '../../../../assets/superuser-dashboard/book4.jpg';
-import book5 from '../../../../assets/superuser-dashboard/book5.jpg';
+// mui circular progress for loading state
+import CircularProgress from '@mui/material/CircularProgress';
+import { COMPANY_API_END_POINT } from '@/utils/constant';
 
+// Import Delete icon and Dialog components
+import DeleteIcon from '@mui/icons-material/Delete';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import { toast } from 'sonner';
+
+// Make the API call to the backend
 function TableList() {
+    const [companies, setCompanies] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [deleteLoading, setDeleteLoading] = useState(false);
+    const [deleteDialog, setDeleteDialog] = useState({
+        open: false,
+        companyId: null,
+        companyName: ''
+    });
 
-    const data = [
-        {
-            _id: 23423343,
-            product: 'Programing Book 1',
-            image: book1,
-            customer: 'Devid John',
-            date: '3 October, 2022',
-            ammount: 45,
-            method: 'Online Payment',
-            status: 'Approved',
-        },
-        {
-            _id: 235343343,
-            product: 'Programing Book 2',
-            image: book2,
-            customer: 'Julia Ani',
-            date: '23 April, 2022',
-            ammount: 55,
-            method: 'Cash On Delivery',
-            status: 'Pending',
-        },
-        {
-            _id: 234239873,
-            product: 'Programing Book 3',
-            image: book3,
-            customer: 'John Smith',
-            date: '10 October, 2022',
-            ammount: 25,
-            method: 'Online Payment',
-            status: 'Approved',
-        },
-        {
-            _id: 23423143,
-            product: 'Programing Book 4',
-            image: book4,
-            customer: 'Devid John',
-            date: '3 March, 2022',
-            ammount: 40,
-            method: 'Cash On Delivery',
-            status: 'Approved',
-        },
-        {
-            _id: 123423343,
-            product: 'Programing Book 5',
-            image: book5,
-            customer: 'Humlar',
-            date: '20 November, 2022',
-            ammount: 45,
-            method: 'Online Payment',
-            status: 'Approved',
-        },
-        {
-            _id: 2333343,
-            product: 'Programing Book 6',
-            image: book2,
-            customer: 'Devid John',
-            date: '12 June, 2022',
-            ammount: 28,
-            method: 'Cash On Delivery',
-            status: 'Pending',
-        },
-    ];
+    useEffect(() => {
+        const fetchCompanies = async () => {
+            try {
+                const response = await fetch(`${COMPANY_API_END_POINT}/companies/all`); // Assuming this is the correct route
+                const data = await response.json();
+                if (data.success) {
+                    setCompanies(data.companies);
+                }
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching companies:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchCompanies();
+    }, []);
+
+    const handleDeleteClick = (companyId, companyName) => {
+        setDeleteDialog({
+            open: true,
+            companyId,
+            companyName
+        });
+    };
+
+    const handleCloseDialog = () => {
+        setDeleteDialog({
+            open: false,
+            companyId: null,
+            companyName: ''
+        });
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!deleteDialog.companyId) return;
+        
+        setDeleteLoading(true);
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${COMPANY_API_END_POINT}/delete/${deleteDialog.companyId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                credentials: 'include'
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                setCompanies(companies.filter(company => company._id !== deleteDialog.companyId));
+                toast.success(data.message || 'Company deleted successfully');
+            } else {
+                toast.error(data.message || 'Failed to delete company');
+            }
+        } catch (error) {
+            console.error('Error deleting company:', error);
+            toast.error('An error occurred while deleting the company');
+        } finally {
+            setDeleteLoading(false);
+            handleCloseDialog();
+        }
+    };
 
     return (
-        <TableContainer component={Paper} className="table_list">
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell className="table_cell">Tracking Id</TableCell>
-                        <TableCell className="table_cell">Product</TableCell>
-                        <TableCell className="table_cell">Customer</TableCell>
-                        <TableCell className="table_cell">Ammount</TableCell>
-                        <TableCell className="table_cell">Date</TableCell>
-                        <TableCell className="table_cell">Payment Status</TableCell>
-                        <TableCell className="table_cell">Status</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {data.map((row) => (
-                        <TableRow key={row._id}>
-                            <TableCell component="th" scope="row" className="table_cell">
-                                <div className="product_idd">
-                                    <img src={row.image} alt="product" className="product_img" />
-                                    {row._id}
-                                </div>
-                            </TableCell>
-                            <TableCell className="table_cell">{row.product}</TableCell>
-                            <TableCell className="table_cell">{row.customer}</TableCell>
-                            <TableCell className="table_cell">{row.ammount}</TableCell>
-                            <TableCell className="table_cell">{row.date}</TableCell>
-                            <TableCell className="table_cell">{row.method}</TableCell>
-                            <TableCell className="table_cell">
-                                <span className={`status ${row.status}`}>{row.status}</span>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <>
+            <TableContainer component={Paper} className="table_list">
+                {loading ? (
+                    <CircularProgress />
+                ) : (
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell className="table_cell">Company Id</TableCell>
+                                <TableCell className="table_cell">Company</TableCell>
+                                <TableCell className="table_cell">Location</TableCell>
+                                <TableCell className="table_cell">Created By</TableCell>
+                                <TableCell className="table_cell">Website</TableCell>
+                                <TableCell className="table_cell">Created On</TableCell>
+                                <TableCell className="table_cell">Actions</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {companies.map((company) => (
+                                <TableRow key={company._id}>
+                                    <TableCell component="th" scope="row" className="table_cell">
+                                    <img src={company.logo || 'https://img.icons8.com/?size=100&id=7819&format=png&color=C850F2'} alt={company.name} className="company_logo_img h-10" />
+                                        <div>{company._id}</div>
+                                    </TableCell>
+                                    <TableCell className="table_cell">{company.name}</TableCell>
+                                    <TableCell className="table_cell">{company.location || 'N/A'}</TableCell>
+                                    <TableCell className="table_cell">{company.userId?.fullname || 'Unknown'}</TableCell>
+                                    <TableCell className="table_cell">{company.website || 'N/A'}</TableCell>
+                                    <TableCell className="table_cell">{new Date(company.createdAt).toLocaleDateString()}</TableCell>
+                                    <TableCell className="table_cell">
+                                        <Tooltip title="Delete Company">
+                                            <IconButton 
+                                                aria-label="delete" 
+                                                color="error"
+                                                onClick={() => handleDeleteClick(company._id, company.name)}
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                )}
+            </TableContainer>
+
+            {/* Confirmation Dialog */}
+            <Dialog
+                open={deleteDialog.open}
+                onClose={handleCloseDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Confirm Delete Company"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete the company "{deleteDialog.companyName}"? 
+                        This action cannot be undone.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog} color="primary">
+                        Cancel
+                    </Button>
+                    <Button 
+                        onClick={handleConfirmDelete} 
+                        color="error" 
+                        autoFocus
+                        disabled={deleteLoading}
+                    >
+                        {deleteLoading ? <CircularProgress size={24} /> : "Delete"}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>
     );
 }
 

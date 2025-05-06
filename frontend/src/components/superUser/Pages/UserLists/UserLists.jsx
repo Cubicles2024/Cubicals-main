@@ -1,30 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import DataTable from '../../Components/DataTable/DataTable';
-import DataTableRecruiter from '../../Components/DataTableRecruiter/DataTableRecruiter'; // Import the new component
+import DataTableUser from '../../Components/DataTableUser/DataTableUser';
+import DataTableRecruiter from '../../Components/DataTableRecruiter/DataTableRecruiter'; 
 import Navbar from '../../Components/Navbar/Navbar';
 import Sidebar from '../../Components/Sidebar/Sidebar';
 import TableList from '../../Components/TableList/TableList';
 import './userlists.scss';
+import { COMPANY_API_END_POINT } from '@/utils/constant';
+
 
 function Lists({ type }) {
     const getLinkPath = () => {
         switch (type) {
             case 'companies':
-                return '/companies/addnew';
+                return '/supreme/companies/add'; // Routes to AddNewCompany component
             case 'user':
-                return '/addnew';
+                return '/supreme/applicants/add'; // Routes to AddNewApplicant component
             case 'recruiter':
-                return '/recruiters/addnew';
+                return '/supreme/recruiters/add'; // Routes to AddNewRecruiter component
             default:
-                return;
+                return '/';
         }
     };
 
     const renderTable = () => {
         switch (type) {
             case 'user':
-                return <DataTable />;
+                return <DataTableUser />;
             case 'recruiter':
                 return <DataTableRecruiter />;
             default:
@@ -40,7 +43,7 @@ function Lists({ type }) {
 
             <div className="list_page_main">
                 <Navbar />
-
+                <h1 className="table_heading ">{type.toUpperCase()} List</h1>
                 <div className="data_table">
                     <div className="btnn">
                         <Link to={getLinkPath()} style={{ textDecoration: 'none' }}>

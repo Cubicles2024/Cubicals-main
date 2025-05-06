@@ -1,0 +1,63 @@
+src/components/superUser
+
+// file structure:
+superUser/
+├── app.scss
+├── super-app.js
+├── Components/
+│   ├── SupremeProtectedRoute.jsx
+│   ├── adminHome/
+│   │   ├── adminHome.jsx
+│   │   └── Home.scss
+│   ├── Chart/
+│   │   ├── ApplicationByStatusChart.jsx
+│   │   ├── ApplicationsByJobChart.jsx
+│   │   ├── ApplicationsOverTimeChart.jsx
+│   │   ├── Chart.jsx
+│   │   ├── chart.scss
+│   │   └── JobsByCompanyChart.jsx
+│   ├── DataTable/
+│   │   ├── DataTable.jsx
+│   │   └── datatable.scss
+│   ├── DataTableRecruiter/
+│   │   ├── DataTableRecruiter.jsx
+│   │   └── DataTableRecruiter.scss
+│   ├── DataTableUser/
+│   │   ├── DataTableUser.jsx
+│   │   └── DataTableUser.scss
+│   ├── Input/
+│   │   ├── Input.jsx
+│   │   └── Input.scss
+│   ├── ItemLists/
+│   │   ├── ItemLists.jsx
+│   │   └── ItemLists.scss
+│   ├── Lists/
+│   │   └── Lists.jsx
+│   ├── Login/
+│   │   └── SuperLogin.jsx
+│   ├── Navbar/
+│   │   ├── Navbar.jsx
+│   │   └── Navbar.scss
+│   ├── Orders/
+│   │   └── Orders.jsx
+│   ├── ProgressBar/
+│   │   ├── ProgressBar.jsx
+│   │   └── ProgressBar.scss
+│   ├── Sidebar/
+│   │   ├── Sidebar.jsx
+│   │   └── Sidebar.scss
+│   └── TableList/
+│       ├── TableList.jsx
+│       └── TableList.scss
+└── Pages/
+    ├── NotFound.js
+    ├── notfound.scss
+    ├── AddNew/
+    │   ├── AddNewApplicant.jsx
+    │   ├── New.scss
+    │   ├── AddNewCompany.jsx
+    │   ├── AddNewRecruiter.jsx
+    │   └── SupremeCompanySetup.jsx
+    └── UserLists/
+        ├── UserLists.jsx
+        └── UserLists.scss

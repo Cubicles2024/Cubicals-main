@@ -1,0 +1,136 @@
+{
+  "timestamp": "2025-05-03T22-07-06",
+  "numTotalTests": 18,
+  "numPassedTests": 18,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "success": true,
+  "testResults": [
+    {
+      "name": "D:\\Projects\\My projects\\Cubicals-main\\backend\\__tests__\\models\\job.test.js",
+      "status": "passed",
+      "assertionResults": [
+        {
+          "title": "should create & save job successfully",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "should fail to save job without required fields",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "should fail to save job with invalid company reference",
+          "status": "passed",
+          "failureMessages": []
+        }
+      ]
+    },
+    {
+      "name": "D:\\Projects\\My projects\\Cubicals-main\\backend\\__tests__\\models\\application.test.js",
+      "status": "passed",
+      "assertionResults": [
+        {
+          "title": "should create & save application successfully",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "should fail to save application without required fields",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "should fail to save application with invalid status",
+          "status": "passed",
+          "failureMessages": []
+        }
+      ]
+    },
+    {
+      "name": "D:\\Projects\\My projects\\Cubicals-main\\backend\\__tests__\\models\\company.test.js",
+      "status": "passed",
+      "assertionResults": [
+        {
+          "title": "should create & save company successfully",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "should fail to save company without required fields",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "should fail to save company with invalid userId reference",
+          "status": "passed",
+          "failureMessages": []
+        }
+      ]
+    },
+    {
+      "name": "D:\\Projects\\My projects\\Cubicals-main\\backend\\__tests__\\models\\user.test.js",
+      "status": "passed",
+      "assertionResults": [
+        {
+          "title": "should create & save user successfully",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "should fail to save user without required fields",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "should fail to save user with invalid email format",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "should fail to save user with invalid role",
+          "status": "passed",
+          "failureMessages": []
+        }
+      ]
+    },
+    {
+      "name": "D:\\Projects\\My projects\\Cubicals-main\\backend\\__tests__\\models\\blog.test.js",
+      "status": "passed",
+      "assertionResults": [
+        {
+          "title": "should create & save blog post successfully",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "should fail to save blog without required fields",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "should save blog without optional fields",
+          "status": "passed",
+          "failureMessages": []
+        }
+      ]
+    },
+    {
+      "name": "D:\\Projects\\My projects\\Cubicals-main\\backend\\Benchmarks\\test.js",
+      "status": "passed",
+      "assertionResults": [
+        {
+          "title": "should measure collection statistics",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "should measure index performance",
+          "status": "passed",
+          "failureMessages": []
+        }
+      ]
+    }
+  ]
+}

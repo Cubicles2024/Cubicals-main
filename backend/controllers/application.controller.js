@@ -1,6 +1,7 @@
 import Application from "../models/application.model.js";
 import Job from "../models/job.model.js";
 import sendMail from "../middlewares/mailer.js";
+import companyModel from "../models/company.model.js";
 
 
 class ApplicationController {
@@ -110,35 +111,93 @@ class ApplicationController {
     } catch (error) {
         next(error);
     }
+  }
+
+  async getApplicantCountsOfEachCompany(req, res, next) {
+    try {
+        // Fetch all companies
+        const companies = await companyModel.find({}, 'name'); 
+        const applications = await Application.find()
+            .populate({
+                path: 'job',
+                populate: {
+                    path: 'company',
+                    select: 'name',
+                },
+            });
+
+        // Initialize a count object with companies set to zero
+        const counts = companies.map(company => ({
+            name: company.name,
+            value: 0 
+        }));
+
+        // Count applications for each company
+        applications.forEach(application => {
+            const companyName = application.job.company.name;
+            const companyIndex = counts.findIndex(c => c.name === companyName);
+            if (companyIndex !== -1) {
+                counts[companyIndex].value += 1; 
+            }
+        });
+
+        return res.status(200).json({ applicantCounts: counts, success: true });
+    } catch (error) {
+        next(error);
+    }
 }
 
 
+
+
+    // Get total number of applicants for all jobs
+    async getTotalApplicants(req, res, next) {
+      try {
+          const totalApplicants = await Application.countDocuments(); // Count all applicants
+
+          return res.status(200).json({ count: totalApplicants, success: true });
+      } catch (error) {
+          next(error);
+      }
+    } 
+
+    // Get total number of Recruiters
+    async recruiterCount(req, res, next) {
+      try {
+          const totalRecruiters = await userModel.countDocuments({ role: 'recruiter' }); // Count users with role 'recruiter'
+
+          return res.status(200).json({ count: totalRecruiters, success: true });
+      } catch (error) {
+          next(error);
+      }
+    }
+
   // Withdraw/Delete Application
-async withdrawApplication(req, res) {
-  try {
-    const applicationId = req.params.id;
-    const userId = req.id; // Get the user ID from the request
+  async withdrawApplication(req, res) {
+    try {
+      const applicationId = req.params.id;
+      const userId = req.id; // Get the user ID from the request
 
-    const application = await Application.findOneAndDelete({
-      _id: applicationId,
-      applicant: userId, // Ensure the user can only delete their own application
-    });
-
-    if (!application) {
-      return res.status(404).json({
-        message: "Application not found or you don't have permission to withdraw it.",
-        success: false,
+      const application = await Application.findOneAndDelete({
+        _id: applicationId,
+        applicant: userId, // Ensure the user can only delete their own application
       });
-    }
 
-    return res.status(200).json({
-      message: "Application withdrawn successfully.",
-      success: true,
-    });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: "Internal Server Error", success: false });
-    }
+      if (!application) {
+        return res.status(404).json({
+          message: "Application not found or you don't have permission to withdraw it.",
+          success: false,
+        });
+      }
+
+      return res.status(200).json({
+        message: "Application withdrawn successfully.",
+        success: true,
+      });
+      } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal Server Error", success: false });
+      }
   }
 
   // Delete Application by Recruiter
@@ -172,7 +231,7 @@ async deleteApplication(req, res) {
 async updateApplicationStatus(req, res) {
   try {
     const applicationId = req.params.id;
-    const { status } = req.body; // Expecting the new status in the request body
+    const { status } = req.body; 
 
     if (!["accepted", "rejected"].includes(status)) {
       return res.status(400).json({

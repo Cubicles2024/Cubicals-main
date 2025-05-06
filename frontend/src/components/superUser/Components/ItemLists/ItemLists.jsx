@@ -1,4 +1,4 @@
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+// import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
@@ -7,7 +7,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './itemlists.scss';
 
-function ItemLists({ type }) {
+function ItemLists({ type, count }) {
     let data;
 
     switch (type) {
@@ -15,7 +15,7 @@ function ItemLists({ type }) {
             data = {
                 title: 'Applicants',
                 isMoney: false,
-                count: 232,
+                count: count, // Use the count prop
                 icon: (
                     <PermIdentityIcon
                         style={{
@@ -26,14 +26,14 @@ function ItemLists({ type }) {
                     />
                 ),
                 link: 'See all users',
-                linkto: '/applicants',
+                linkto: '/supreme/applicants',
             };
             break;
         case 'Recruiter':
             data = {
-                title: 'Recruiter',
+                title: 'Recruiters',
                 isMoney: false,
-                count: 150,
+                count: count, // Use the count prop
                 icon: (
                     <HailOutlinedIcon
                         style={{
@@ -44,32 +44,15 @@ function ItemLists({ type }) {
                     />
                 ),
                 link: 'See all recruiters',
-                linkto: '/recruiters',
+                linkto: '/supreme/recruiters',
             };
             break;
-        case 'Job Vacancies':
-            data = {
-                title: 'Job Vacancies',
-                isMoney: false,
-                count: 34,
-                icon: (
-                    <WorkOutlineOutlinedIcon
-                        style={{
-                            color: '#AC7088',
-                            backgroundColor: '#FFF38C',
-                        }}
-                        className="icon"
-                    />
-                ),
-                link: 'View all jobs',
-                linkto: '/JobVacancies',
-            };
-            break;
+
         case 'Companies':
             data = {
                 title: 'Companies',
                 isMoney: false,
-                count: 107,
+                count: count, // Use the count prop
                 icon: (
                     <BusinessOutlinedIcon
                         style={{
@@ -80,7 +63,7 @@ function ItemLists({ type }) {
                     />
                 ),
                 link: 'See all Companies',
-                linkto: '/Companies',
+                linkto: '/supreme/Companies',
             };
             break;
         default:
@@ -91,10 +74,10 @@ function ItemLists({ type }) {
         <div className="item_listss">
             <div className="name">
                 <p>{data.title}</p>
-                <span className="persentage positive">
+                {/* <span className="persentage positive">
                     <KeyboardArrowUpIcon />
                     20 %
-                </span>
+                </span> */}
             </div>
 
             <div className="counts">

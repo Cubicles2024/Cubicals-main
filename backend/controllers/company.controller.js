@@ -1,6 +1,7 @@
 import Company from "../models/company.model.js";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
+import companyModel from "../models/company.model.js";
 
 class CompanyController {
   // Register a new company
@@ -27,10 +28,33 @@ class CompanyController {
   async getCompany(req, res, next) {
     try {
       const userId = req.id; // Logged in user id
-      const companies = await Company.find({ userId });
+      const fetchedCompanies = await Company.find({ userId });
+  
+      if (fetchedCompanies.length === 0) {
+        return res.status(404).json({ message: "Companies not found.", success: false });
+      }
+  
+      const sortedCompanies = fetchedCompanies.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  
+      return res.status(200).json({ companies: sortedCompanies, success: true });
+    } catch (error) {
+      next(error);
+    }
+  }
+  
+
+  // Get all companies across users
+  async getAllCompanies(req, res, next) {
+    try {
+      const companies = await Company.find()
+        .select('name website location logo createdAt') 
+        .populate({
+          path: 'userId',
+          select: 'fullname email', 
+        });
 
       if (companies.length === 0) {
-        return res.status(404).json({ message: "Companies not found.", success: false });
+        return res.status(404).json({ message: "No companies found.", success: false });
       }
 
       return res.status(200).json({ companies, success: true });
@@ -38,6 +62,18 @@ class CompanyController {
       next(error);
     }
   }
+
+  // Get total number of Companies
+  async companyCount(req, res, next) {
+    try {
+        const totalCompanies = await companyModel.countDocuments(); 
+
+        return res.status(200).json({ count: totalCompanies, success: true });
+    } catch (error) {
+        next(error); 
+    }
+  }
+
 
   // Get a specific company by ID
   async getCompanyById(req, res, next) {
@@ -81,6 +117,73 @@ class CompanyController {
       next(error);
     }
   }
+
+  // To delete a company by company ID
+  async deleteCompany(req, res, next) {
+    try {
+      const companyId = req.params.id;
+  
+      const deletedCompany = await Company.findByIdAndDelete(companyId);
+  
+      if (!deletedCompany) {
+        return res.status(404).json({ message: "Company not found.", success: false });
+      }
+  
+      return res.status(200).json({ message: "Company deleted successfully.", success: true });
+    } catch (error) {
+      next(error);
+    }
+  } 
+
+  // Add a new company with logo upload
+  async addCompany(req, res, next) {
+    try {
+      const { name, description, website, location } = req.body;
+      
+      if (!name) {
+        return res.status(400).json({ 
+          message: "Company name is required.", 
+          success: false 
+        });
+      }
+
+      // Check if company with same name already exists
+      const existingCompany = await Company.findOne({ name });
+      if (existingCompany) {
+        return res.status(400).json({ 
+          message: "A company with this name already exists.", 
+          success: false 
+        });
+      }
+
+      // Upload logo if it exists
+      let logo;
+      if (req.file) {
+        const fileUri = getDataUri(req.file);
+        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+        logo = cloudResponse.secure_url;
+      }
+
+      // Create new company
+      const newCompany = await Company.create({
+        name,
+        description,
+        website,
+        location,
+        logo,
+        userId: req.id,
+      });
+
+      return res.status(201).json({
+        message: "Company created successfully.",
+        company: newCompany,
+        success: true
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
 }
 
 export default new CompanyController();

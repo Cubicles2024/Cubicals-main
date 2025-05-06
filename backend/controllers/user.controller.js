@@ -6,6 +6,8 @@ import cloudinary from "../utils/cloudinary.js";
 import PDFDocument from "pdfkit";
 import applicationModel from "../models/application.model.js";
 import moment from 'moment';
+import userModel from "../models/user.model.js";
+import mongoose from "mongoose";
 
 // Simple email validation regex
 //format: something@something.something
@@ -102,7 +104,12 @@ class UserController {
 
             return res
                 .status(200)
-                .cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict' })
+                .cookie("token", token, { 
+                    httpOnly: true,
+                    secure: true,                
+                    sameSite: "none",
+                    maxAge: 7 * 24 * 60 * 60 * 1000 
+                })
                 .json({
                     message: `Welcome back ${user.fullname}`,
                     user: this.getUserResponse(user),
@@ -145,12 +152,22 @@ class UserController {
             if (bio) user.profile.bio = bio;
             if (skills) user.profile.skills = skills.split(",");
 
-            // Handle profile photo upload
             if (file) {
+                // console.log("Resume upload triggered after getting file")
                 const fileUri = getDataUri(file);
-                cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-                user.profile.resume = cloudResponse.secure_url; // Save Cloudinary URL
+                const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+                    public_id: `resume_${Date.now()}`,
+                  });
+                  const baseUrl = `https://res.cloudinary.com/${cloudinary.config().cloud_name}`;
+                  const pdfUrl = `${baseUrl}/image/upload/f_auto,q_auto/${cloudResponse.public_id}.pdf`;
+                
+                user.profile.resume = pdfUrl;
+
                 user.profile.resumeOriginalName = file.originalname; // Save original file name
+                // console.log("File uploaded in resume")
+                // console.log(cloudResponse);
+            }else {
+                console.log("File not received from request of frontend")
             }
 
             await user.save();
@@ -180,61 +197,335 @@ class UserController {
     async generateUserReport(req, res, next) {
         try {
             const userId = req.id;
-            const user = await User.findById(userId); 
     
+            if (!mongoose.isValidObjectId(userId)) {
+                return res.status(400).json({ 
+                    message: "Invalid user ID format",
+                    success: false 
+                });
+            }
+    
+            const userObjectId = new mongoose.Types.ObjectId(userId);
+            
+            const user = await User.findById(userObjectId); 
+            
             if (!user) {
                 return res.status(404).json({ message: "User not found", success: false });
             }
     
             const applications = await applicationModel
-                .find({ applicant: userId })
+                .find({ applicant: userObjectId }) 
                 .populate({
                     path: 'job',
-                    populate: { path: 'company' } // Populate the company field
-                });
+                    populate: { 
+                        path: 'company',
+                        model: 'Company'
+                    }
+                })
+                .lean();
+    
+            // 3. Add debug logging
+            console.log(`Found ${applications.length} applications for user ${userId}`);
+            console.log('Sample application:', applications[0]);
     
             const doc = new PDFDocument();
             res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', 'attachment; filename=user_report.pdf');
-        
-            // Add user details to the PDF
-            doc.fontSize(18).text(`User Report for ${user.fullname}`, { align: 'center' });
+            res.setHeader('Content-Disposition', `attachment; filename=${user.fullname}_report.pdf`);
+    
+            // PDF Content
+            doc.fontSize(18).text(`Career Report for ${user.fullname}`, { align: 'center' });
             doc.moveDown();
-            doc.fontSize(14).text(`Email: ${user.email}`);
-            doc.text(`Phone: ${user.phoneNumber}`);
-            doc.moveDown();
-        
-            doc.fontSize(16).text('All Applications:', { underline: true });
-        
+            
+            // User Details Table
+            doc.fontSize(12)
+               .text(`Email: ${user.email || 'Not provided'}`, { continued: true })
+               .text(`Phone: ${user.phoneNumber || 'Not provided'}`, { align: 'right' });
+            
+            doc.moveDown(2);
+    
+            // Applications Section
+            doc.fontSize(16).text('Job Applications', { underline: true });
+            
             if (applications.length === 0) {
-                doc.text('No applications found.'); 
+                doc.fontSize(12).text('No applications found.', { color: '#666' });
             } else {
                 applications.forEach((app, index) => {
-                    doc.moveDown();
-                    doc.fontSize(12).text(`Application No.${index + 1}`);
-                    doc.text(`Job Title: ${app.job?.title || "N/A"}`); 
-                    doc.text(`Company: ${app.job?.company?.name || "N/A"}`); 
-                    doc.text(`Status: ${app.status || "N/A"}`);
-                    doc.text(`Applied On: ${moment(app.createdAt).format('DD-MM-YYYY')}`);
+                    // Application Header
+                    doc.moveDown()
+                       .fontSize(14)
+                       .fillColor('#333')
+                       .text(`${index + 1}. ${app.job?.title || 'Untitled Position'}`, {
+                           underline: true
+                       });
+    
+                    // Application Details
+                    doc.fontSize(12)
+                       .fillColor('#666')
+                       .text(`Company: ${app.job?.company?.name || 'Company not specified'}`);
+                    
+                    // Status with color coding
+                    const statusColor = app.status === 'accepted' ? '#22c55e' : 
+                                      app.status === 'rejected' ? '#ef4444' : '#eab308';
+                    doc.text(`Status: `)
+                       .fillColor(statusColor)
+                       .text(app.status.toUpperCase())
+                       .fillColor('#666');
+    
+                    doc.text(`Applied: ${moment(app.createdAt).format('MMM D, YYYY')}`);
+                    
+                    // Separator
+                    if (index < applications.length - 1) {
+                        doc.moveDown(0.5)
+                           .lineWidth(0.5)
+                           .strokeColor('#ddd')
+                           .lineCap('butt')
+                           .moveTo(doc.x, doc.y)
+                           .lineTo(doc.page.width - 50, doc.y)
+                           .stroke();
+                    }
                 });
             }
     
-            doc.end(); 
-            doc.pipe(res); 
+            doc.end();
+            doc.pipe(res);
     
         } catch (error) {
-            console.error('Error generating report:', error); 
+            console.error('Report generation error:', error);
+            res.status(500).json({ 
+                message: 'Failed to generate report',
+                error: error.message,
+                success: false 
+            });
+        }
+    }
+
+    async getAllRecruiters(req, res, next) {
+        try {
+            const recruiters = await userModel.find({ role: 'recruiter' }) 
+                .select('fullname email phoneNumber') 
+
+    
+            if (recruiters.length === 0) {
+                return res.status(404).json({ message: "No recruiters found.", success: false });
+            }
+    
+            return res.status(200).json({ recruiters, success: true });
+        } catch (error) {
             next(error);
         }
     }
 
+    // Get total number of Recruiters
+    async getRecruiterCount(req, res, next) {
+        try {
+            const totalRecruiters = await userModel.countDocuments({ role: 'recruiter' }); // Count users with role 'recruiter'
+    
+            return res.status(200).json({ count: totalRecruiters, success: true });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    // Delete a recruiter by ID
+    async deleteRecruiter(req, res, next) {
+        try {
+            const { id } = req.params;
+            
+            // Find and delete the recruiter
+            const deletedRecruiter = await User.findByIdAndDelete(id);
+            
+            if (!deletedRecruiter) {
+                return res.status(404).json({ message: 'Recruiter not found' });
+            }
+            
+            res.status(200).json({ 
+                success: true, 
+                message: 'Recruiter deleted successfully' 
+            });
+        } catch (error) {
+            console.error('Error deleting recruiter:', error);
+            next(error);
+        }
+    }
+
+    // Get all users with role 'student'
+    async getAllUsers(req, res, next) {
+        try {
+            const users = await User.find({ role: 'student' })
+                .select('fullname email phoneNumber createdAt');
+
+            if (users.length === 0) {
+                return res.status(404).json({ message: "No users found.", success: false });
+            }
+
+            return res.status(200).json({ users, success: true });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    // Delete a user by ID
+    async deleteUser(req, res, next) {
+        try {
+            const { id } = req.params;
+            
+            // Find and delete the user
+            const deletedUser = await User.findByIdAndDelete(id);
+            
+            if (!deletedUser) {
+                return res.status(404).json({ message: 'User not found', success: false });
+            }
+            
+            return res.status(200).json({ 
+                success: true, 
+                message: 'User deleted successfully' 
+            });
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            next(error);
+        }
+    }
+
+    // Admin function to add a new applicant/student
+    async addApplicantByAdmin(req, res, next) {
+        try {
+            const { fullname, email, phoneNumber, password, role = 'student' } = req.body;
+
+            // Validate email format
+            if (!simpleEmailRegex.test(email)) {
+                return res.status(400).json({ message: "Invalid email, format: something@something.something", success: false });
+            }
+
+            // Validate password strength
+            if (!passwordRegex.test(password)) {
+                return res.status(400).json({ message: "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character.", success: false });
+            }
+
+            // Check for missing fields
+            if (!fullname || !phoneNumber || !password) {
+                return res.status(400).json({ message: "Required fields are missing", success: false });
+            }
+
+            // Check for file upload
+            const file = req.file;
+            let cloudResponse;
+            if (file) {
+                const fileUri = getDataUri(file);
+                cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+            }
+
+            const existingUser = await User.findOne({ email });
+            if (existingUser) {
+                return res.status(400).json({ message: "User already exists with this email.", success: false });
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+            
+            const newUser = await User.create({
+                fullname,
+                email,
+                phoneNumber,
+                password: hashedPassword,
+                role,
+                profile: {
+                    profilePhoto: cloudResponse ? cloudResponse.secure_url : null,
+                },
+            });
+
+            return res.status(201).json({ 
+                message: "Applicant created successfully.", 
+                user: this.getUserResponse(newUser),
+                success: true 
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    // Admin function to add a new recruiter
+    async addRecruiterByAdmin(req, res, next) {
+        try {
+            const { fullname, email, phoneNumber, password, bio } = req.body;
+            const role = 'recruiter'; // Force role to be recruiter
+
+            // Validate email format
+            if (!simpleEmailRegex.test(email)) {
+                return res.status(400).json({ message: "Invalid email, format: something@something.something", success: false });
+            }
+
+            // Validate password strength
+            if (!passwordRegex.test(password)) {
+                return res.status(400).json({ message: "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character.", success: false });
+            }
+
+            // Check for missing fields
+            if (!fullname || !phoneNumber || !password) {
+                return res.status(400).json({ message: "Required fields are missing", success: false });
+            }
+
+            // Check for file upload
+            const file = req.file;
+            let cloudResponse;
+            if (file) {
+                const fileUri = getDataUri(file);
+                cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+            }
+
+            const existingUser = await User.findOne({ email });
+            if (existingUser) {
+                return res.status(400).json({ message: "User already exists with this email.", success: false });
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+            
+            const newRecruiter = await User.create({
+                fullname,
+                email,
+                phoneNumber,
+                password: hashedPassword,
+                role,
+                profile: {
+                    profilePhoto: cloudResponse ? cloudResponse.secure_url : null,
+                    bio: bio || "",
+                },
+            });
+
+            return res.status(201).json({ 
+                message: "Recruiter created successfully.", 
+                user: this.getUserResponse(newRecruiter),
+                success: true 
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 
     register = this.register.bind(this);
     login = this.login.bind(this);
     logout = this.logout.bind(this);
     updateProfile = this.updateProfile.bind(this);
     generateUserReport = this.generateUserReport.bind(this);
+    getAllRecruiters = this.getAllRecruiters.bind(this);
+    getRecruiterCount = this.getRecruiterCount.bind(this);
+    deleteRecruiter = this.deleteRecruiter.bind(this);
+    getAllUsers = this.getAllUsers.bind(this);
+    deleteUser = this.deleteUser.bind(this);
+    addApplicantByAdmin = this.addApplicantByAdmin.bind(this);
+    addRecruiterByAdmin = this.addRecruiterByAdmin.bind(this);
 }
 
 const userController = new UserController();
-export const { register, login, logout, updateProfile, generateUserReport } = userController;
+export const { 
+    register, 
+    login, 
+    logout, 
+    updateProfile, 
+    generateUserReport, 
+    getAllRecruiters, 
+    getRecruiterCount,
+    deleteRecruiter,
+    getAllUsers,
+    deleteUser,
+    addApplicantByAdmin,
+    addRecruiterByAdmin
+} = userController;

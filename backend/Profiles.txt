@@ -1,0 +1,20 @@
+*****STUDENTS****
+
+1) email: student1@gmail.com
+pass: Student1@123
+
+2) 
+
+*****RECRUITERS****
+1) 
+
+*****Super Users****
+1) Enter Full Name: SuperUser1
+Enter Email: SuperUser1@gmail.com
+Enter Phone Number: 8888888888
+Enter Password: Super@123
+
+2) Enter Full Name: SuperUser2
+Enter Email: SuperUser2@gmail.com
+Enter Phone Number: 8888888898
+Enter Password: Super@2

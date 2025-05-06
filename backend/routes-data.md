@@ -1,192 +1,72 @@
-# Job Portal API Documentation
+# API Endpoints Documentation
 
-## AuthRoutes
+## User Routes
 
-- **`/register`**
-  - **URL:** `http://127.0.0.1:3000/auth/register`
-  - **Method:** POST
-  - **Controller:** user.controller.js.register
-  - **Example Payload:**
-    ```json
-    {
-      "name": "Aarav Sharma",
-      "email": "aarav.sharma@example.com",
-      "password": "123",
-      "role": "jobSeeker",
-      "address": {
-        "street": "456 Elm St",
-        "city": "Mumbai",
-        "state": "MH",
-        "zipCode": "400001",
-        "country": "India"
-      },
-      "profilePicture": "https://www.example.com/profile-pic.jpg",
-      "resume": "https://www.example.com/resume.pdf"
-    }
-    ```
+- **POST** `/user/register`  
+  Register a new user (requires file upload for profile picture).
 
---------------------------------------------------------------------------------
+- **POST** `/user/login`  
+  Log in a user.
 
-- **`/login`**
-  - **URL:** `http://127.0.0.1:3000/auth/login`
-  - **Method:** POST
-  - **Controller:** user.controller.js.login
-  - **Example Payload:**
-    ```json
-    {
-      "email": "aarav.sharma@example.com",
-      "password": "123"
-    }
-    ```
+- **GET** `/user/logout`  
+  Log out a user.
 
---------------------------------------------------------------------------------
+- **POST** `/user/profile/update`  
+  Update user profile (requires authentication and optional file upload).
 
-- **`/logout`**
-  - **URL:** `http://127.0.0.1:3000/auth/logout`
-  - **Method:** GET
-  - **Controller:** user.controller.js.logout
-  - **Example Request:**
-    - Header: `Authorization: Bearer <token>`
+---
 
---------------------------------------------------------------------------------
+## Company Routes
 
-## CompanyRoutes
+- **POST** `/company/register`  
+  Register a new company (requires authentication).
 
-- **`/register`**
-  - **URL:** `http://127.0.0.1:3000/company/register`
-  - **Method:** POST
-  - **Middleware:** isAuthenticated
-  - **Controller:** company.controller.js.registerCompany
-  - **Example Payload:**
-    ```json
-    {
-      "name": "Tech Innovations Pvt. Ltd.",
-      "website": "https://www.techinnovations.com",
-      "location": "Bengaluru, India"
-    }
-    ```
+- **GET** `/company/get`  
+  Get all registered companies.
 
---------------------------------------------------------------------------------
+- **GET** `/company/get/:id`  
+  Get company by ID.
 
-- **`/get`**
-  - **URL:** `http://127.0.0.1:3000/company/get`
-  - **Method:** GET
-  - **Middleware:** isAuthenticated
-  - **Controller:** company.controller.js.getCompany
+- **PUT** `/company/update/:id`  
+  Update company details (requires authentication and file upload).
 
---------------------------------------------------------------------------------
+---
 
-- **`/get/:id`**
-  - **URL:** `http://127.0.0.1:3000/company/get/:id`
-  - **Method:** GET
-  - **Middleware:** isAuthenticated
-  - **Controller:** company.controller.js.getCompanyById
+## Job Routes
 
---------------------------------------------------------------------------------
+- **POST** `/job/post`  
+  Post a new job (requires authentication).
 
-- **`/update/:id`**
-  - **URL:** `http://127.0.0.1:3000/company/update/:id`
-  - **Method:** PUT
-  - **Middleware:** isAuthenticated, singleUpload
-  - **Controller:** company.controller.js.updateCompany
-  - **Example Payload:**
-    ```json
-    {
-      "name": "Updated Company Name",
-      "website": "https://www.updatedwebsite.com"
-    }
-    ```
+- **GET** `/job/get`  
+  Get all job listings (requires authentication).
 
---------------------------------------------------------------------------------
+- **GET** `/job/getadminjobs`  
+  Get all jobs posted by admin (requires authentication).
 
-## JobRoutes
+- **GET** `/job/get/:id`  
+  Get job details by job ID (requires authentication).
 
-- **`/post`**
-  - **URL:** `http://127.0.0.1:3000/job/post`
-  - **Method:** POST
-  - **Middleware:** isAuthenticated
-  - **Controller:** job.controller.js.postJob
-  - **Example Payload:**
-    ```json
-    {
-      "title": "Software Engineer",
-      "description": "Job description goes here.",
-      "requirements": "Requirements for the job.",
-      "location": "Bengaluru, India",
-      "salary": 60000,
-      "openings": 2
-    }
-    ```
+---
 
---------------------------------------------------------------------------------
+## Application Routes
 
-- **`/get`**
-  - **URL:** `http://127.0.0.1:3000/job/get`
-  - **Method:** GET
-  - **Middleware:** isAuthenticated
-  - **Controller:** job.controller.js.getAllJobs
+- **POST** `/application/apply/:id`  
+  Apply for a job (requires authentication).
 
---------------------------------------------------------------------------------
+- **GET** `/application/get`  
+  Get all jobs applied by the user (requires authentication).
 
-- **`/getadminjobs`**
-  - **URL:** `http://127.0.0.1:3000/job/getadminjobs`
-  - **Method:** GET
-  - **Middleware:** isAuthenticated
-  - **Controller:** job.controller.js.getAdminJobs
+- **GET** `/application/:id/applicants`  
+  Get all applicants for a specific job (requires authentication).
 
---------------------------------------------------------------------------------
+- **PATCH** `/application/status/:id/update`  
+  Update the status of an application (accept/reject) (requires authentication).
 
-- **`/get/:id`**
-  - **URL:** `http://127.0.0.1:3000/job/get/:id`
-  - **Method:** GET
-  - **Middleware:** isAuthenticated
-  - **Controller:** job.controller.js.getJobById
+- **DELETE** `/application/withdraw/:id`  
+  Withdraw a job application (requires authentication).
 
---------------------------------------------------------------------------------
+- **DELETE** `/application/delete/:id`  
+  Delete an application as a recruiter (requires authentication).
 
-## ApplicationRoutes
-
-- **`/apply/:id`**
-  - **URL:** `http://127.0.0.1:3000/application/apply/:id`
-  - **Method:** POST
-  - **Middleware:** isAuthenticated
-  - **Controller:** application.controller.js.applyJob
-  - **Example Payload:**
-    ```json
-    {
-      "resume": "https://www.example.com/myresume.pdf"
-    }
-    ```
-
---------------------------------------------------------------------------------
-
-- **`/get`**
-  - **URL:** `http://127.0.0.1:3000/application/get`
-  - **Method:** GET
-  - **Middleware:** isAuthenticated
-  - **Controller:** application.controller.js.getAppliedJobs
-
---------------------------------------------------------------------------------
-
-- **`/:id/applicants`**
-  - **URL:** `http://127.0.0.1:3000/application/:id/applicants`
-  - **Method:** GET
-  - **Middleware:** isAuthenticated
-  - **Controller:** application.controller.js.getApplicants
-
---------------------------------------------------------------------------------
-
-- **`/status/:id/update`**
-  - **URL:** `http://127.0.0.1:3000/application/status/:id/update`
-  - **Method:** PATCH
-  - **Middleware:** isAuthenticated
-  - **Controller:** application.controller.js.updateStatus
-  - **Example Payload:**
-    ```json
-    {
-      "status": "accepted" // or "rejected", "pending"
-    }
-    ```
-
---------------------------------------------------------------------------------
-
+- **PATCH** `/application/status/:id`  
+  Accept or reject an application as a recruiter (requires authentication).
