@@ -12,7 +12,7 @@ import chartRoutes from "./routes/chart.route.js";
 import applicationRoute from "./routes/application.route.js";
 import blogRoutes from "./routes/blog.route.js"
 import setupSwagger from './docs/swaggerDocs.js';
-import { accessLogStream, dualStream } from "./utils/morganConfig.js";
+import { accessLogStream } from "./utils/morganConfig.js";
 dotenv.config({});
 
 const app = express();
@@ -23,7 +23,7 @@ const app = express();
 app.use(helmet());
 // app.use(rate_limiter);          // To prevent DOS attacks  [Fix too many requests error]
 app.use(cookieParser());
-app.use(morgan("combined", { stream: dualStream }));
+app.use(morgan("combined", { stream: accessLogStream }));
 // :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"
 
 // Built-in middlewares (3)
